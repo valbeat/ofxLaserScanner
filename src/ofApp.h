@@ -19,18 +19,24 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
+    
+    private:
         //カメラ
         ofVideoGrabber camera;
         int camWidth;
         int camHeight;
-    
+        
+        ofFbo fbo;
+        
         //GUI
         ofxPanel gui;
         ofxIntSlider laserBright;
-        ofxFloatSlider d;
-        ofxFloatSlider l;
+        ofxFloatSlider d; // カメラとレーザーの距離
+        ofxFloatSlider L; // カメラとスクリーンの距離
+
+        bool guiFlag;
     
-    private:
         void findLineCenter();
+        void calc();
+    
 };
