@@ -2,27 +2,11 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
-    camWidth = 640;
-    camHeight = 480;
-    
-    ofSetLogLevel(OF_LOG_VERBOSE);
-    camera.setVerbose(true);
-    camera.listDevices();
-    camera.setDeviceID(0);
-    camera.initGrabber(camWidth,camHeight);
-    
-    guiFlag = true;
-    gui.setup();
-    gui.add(laserBright.setup("laserBright",220,0,250));
-    gui.add(d.setup("d(mm)", 5, 0, 20));
-    gui.add(L.setup("L(mm)", 20, 0, 500));
-    
-    fbo.allocate(camWidth, camHeight, GL_RGB);
-    
-    gui.loadFromFile("settings.xml");
-}
+    setupCamera();
+    setupGui();
+    capture.allocate(camWidth, camHeight, GL_RGB);
 
+}
 //--------------------------------------------------------------
 void ofApp::update(){
     bool isNewFrame = false;
@@ -30,17 +14,16 @@ void ofApp::update(){
     isNewFrame = camera.isFrameNew();
     
     if (isNewFrame) {
-        fbo.begin();
-        camera.draw(0,0, fbo.getWidth(), fbo.getHeight());
-        fbo.end();
-        
+        capture.begin();
+        capture.draw(0,0, capture.getWidth(), capture.getHeight());
+        capture.end();
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofSetColor(255);
-    fbo.draw(0, 0, camWidth, camHeight);
+    capture.draw(0, 0, camWidth, camHeight);
     if (guiFlag)
         gui.draw();
     
@@ -96,7 +79,41 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
-
+void ofApp::setupCamera() {
+    camWidth = 640;
+    camHeight = 480;
+    
+    ofSetLogLevel(OF_LOG_VERBOSE);
+    camera.setVerbose(true);
+    camera.listDevices();
+    camera.setDeviceID(0);
+    camera.initGrabber(camWidth,camHeight);
+}
+void ofApp::setupGui() {
+    guiFlag = true;
+    gui.setup();
+    gui.add(laserBright.setup("laserBright",220,0,250));
+    gui.add(d.setup("d(mm)", 5, 0, 20));
+    gui.add(L.setup("L(mm)", 20, 0, 500));
+    gui.loadFromFile("settings.xml");
+}
+void ofApp::getLaserPixel(ofImage image) {
+    ofPixels pixels = image.getPixelsRef();
+    int w = pixels.getWidth();
+    int h = pixels.getHeight();
+    
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w ; x++) {
+            ofColor color = pixels.getColor(x, y);
+            if (color.g > laserBright) {
+                ofPushMatrix();
+                ofSetColor(0, 255, 0);
+                ofRect(x, y, 1, 1);
+                ofPopMatrix();
+            }
+        }
+    }
+}
 
 void ofApp::calc() {
     int x0;
