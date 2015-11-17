@@ -5,6 +5,7 @@ void ofApp::setup(){
     setupCamera();
     setupGui();
     capture.allocate(camWidth, camHeight, GL_RGB);
+    laserScan.allocate(camWidth, camHeight, GL_RGB);
     // マウスカーソル非表示バグ回避
     ofHideCursor();
 
@@ -19,16 +20,17 @@ void ofApp::update(){
         capture.begin();
         camera.draw(0,0, camWidth, camHeight);
         capture.end();
-
+        
+        ofPixels pixels;
+        capture.readToPixels(pixels);
+        readLaserPixels(pixels);
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofPixels pixels;
-    capture.readToPixels(pixels);
-    getLaserPixel(pixels);
-//    capture.draw(0, 0, camWidth, camHeight);
+//    laserScan.draw(0,0,camWidth,camHeight);
+//        capture.draw(0, 0, camWidth, camHeight);
     if (guiFlag)
         gui.draw();
     
@@ -103,19 +105,20 @@ void ofApp::setupGui() {
     gui.add(L.setup("L(mm)", 20, 0, 500));
     gui.loadFromFile("settings.xml");
 }
-void ofApp::setLaserPixel(ofPixels &pixels) {
+void ofApp::readLaserPixels(ofPixels pixels) {
     int w = pixels.getWidth();
     int h = pixels.getHeight();
+    laserScan.begin();
     for (int y = 0; y < h; y+= 10) {
         for (int x = 0; x < w ; x++) {
             ofColor c = pixels.getColor(x, y);
             if(c.g > laserBright) {
-                
                 ofSetColor(0,255,0);
                 ofRect(x, y, 1, 1);
             }
         }
     }
+    laserScan.end();
 }
 
 void ofApp::calc() {

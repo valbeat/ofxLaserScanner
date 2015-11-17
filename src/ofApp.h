@@ -26,6 +26,7 @@ class ofApp : public ofBaseApp{
     int camHeight;
     
     ofFbo capture;
+    ofFbo laserScan;
     
     //GUI
     ofxPanel gui;
@@ -37,7 +38,7 @@ class ofApp : public ofBaseApp{
 
     void findLineCenter();
     void calc();
-    void setLaserPixel(ofPixels &pixels);
+    void readLaserPixels(ofPixels pixels);
     void setupCamera();
     void setupGui();
     
