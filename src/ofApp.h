@@ -37,7 +37,7 @@ class ofApp : public ofBaseApp{
 
     void findLineCenter();
     void calc();
-    void getLaserPixel(ofImage image);
+    void setLaserPixel(ofPixels &pixels);
     void setupCamera();
     void setupGui();
     

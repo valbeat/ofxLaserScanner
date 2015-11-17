@@ -5,6 +5,8 @@ void ofApp::setup(){
     setupCamera();
     setupGui();
     capture.allocate(camWidth, camHeight, GL_RGB);
+    // マウスカーソル非表示バグ回避
+    ofHideCursor();
 
 }
 //--------------------------------------------------------------
@@ -15,15 +17,18 @@ void ofApp::update(){
     
     if (isNewFrame) {
         capture.begin();
-        capture.draw(0,0, capture.getWidth(), capture.getHeight());
+        camera.draw(0,0, camWidth, camHeight);
         capture.end();
+
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofSetColor(255);
-    capture.draw(0, 0, camWidth, camHeight);
+    ofPixels pixels;
+    capture.readToPixels(pixels);
+    getLaserPixel(pixels);
+//    capture.draw(0, 0, camWidth, camHeight);
     if (guiFlag)
         gui.draw();
     
@@ -47,7 +52,8 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-
+    //マウスカーソル非表示バグ回避
+    ofShowCursor();
 }
 
 //--------------------------------------------------------------
@@ -82,7 +88,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 void ofApp::setupCamera() {
     camWidth = 640;
     camHeight = 480;
-    
+    camera.setDesiredFrameRate(30);
     ofSetLogLevel(OF_LOG_VERBOSE);
     camera.setVerbose(true);
     camera.listDevices();
@@ -97,19 +103,16 @@ void ofApp::setupGui() {
     gui.add(L.setup("L(mm)", 20, 0, 500));
     gui.loadFromFile("settings.xml");
 }
-void ofApp::getLaserPixel(ofImage image) {
-    ofPixels pixels = image.getPixelsRef();
+void ofApp::setLaserPixel(ofPixels &pixels) {
     int w = pixels.getWidth();
     int h = pixels.getHeight();
-    
-    for (int y = 0; y < h; y++) {
+    for (int y = 0; y < h; y+= 10) {
         for (int x = 0; x < w ; x++) {
-            ofColor color = pixels.getColor(x, y);
-            if (color.g > laserBright) {
-                ofPushMatrix();
-                ofSetColor(0, 255, 0);
+            ofColor c = pixels.getColor(x, y);
+            if(c.g > laserBright) {
+                
+                ofSetColor(0,255,0);
                 ofRect(x, y, 1, 1);
-                ofPopMatrix();
             }
         }
     }
@@ -122,5 +125,4 @@ void ofApp::calc() {
     int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
     // dの[mm]→[pixel]変換
     x0 = (int)(d * 72 / 25.4);
-    
 }
