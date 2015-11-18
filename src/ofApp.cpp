@@ -2,7 +2,11 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    #ifdef _USE_LIVE_VIDEO
     setupCamera();
+    #else
+    setupVideo();
+    #endif
     setupGui();
     capture.allocate(camWidth, camHeight, GL_RGB);
     laserScan.allocate(camWidth, camHeight, GL_RGB);
@@ -13,14 +17,24 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     bool isNewFrame = false;
+    #ifdef _USE_LIVE_VIDEO
     camera.update();
     isNewFrame = camera.isFrameNew();
-    
+    #else
+    video.update();
+    isNewFrame = video.isFrameNew();
+    #endif
     if (isNewFrame) {
+        #ifdef _USE_LIVE_VIDEO
         capture.begin();
         camera.draw(0,0, camWidth, camHeight);
         capture.end();
-        
+        #else
+        capture.begin();
+        video.draw(0, 0, camWidth, camHeight);
+        capture.end();
+        #endif
+
         ofPixels pixels;
         capture.readToPixels(pixels);
         readLaserPixels(pixels);
@@ -30,7 +44,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 //    laserScan.draw(0,0,camWidth,camHeight);
-//        capture.draw(0, 0, camWidth, camHeight);
+    capture.draw(0, 0, camWidth, camHeight);
     if (guiFlag)
         gui.draw();
     
@@ -96,6 +110,12 @@ void ofApp::setupCamera() {
     camera.listDevices();
     camera.setDeviceID(0);
     camera.initGrabber(camWidth,camHeight);
+}
+void ofApp::setupVideo() {
+    camWidth = 640;
+    camHeight = 480;
+    video.loadMovie(VIDEO_NAME);
+    video.play();
 }
 void ofApp::setupGui() {
     guiFlag = true;

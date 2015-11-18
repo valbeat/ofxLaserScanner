@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+//#define _USE_LIVE_VIDEO
+#define VIDEO_NAME "test.mov"
 
 class ofApp : public ofBaseApp{
 
@@ -20,8 +22,15 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-    //カメラ
+    
+
+    //ライブカメラを使用する際には、カメラ入力を準備
     ofVideoGrabber camera;
+    void setupCamera();
+    //あらかじめ録画した映像を使用する際には、ビデオプレイヤーを準備
+    ofVideoPlayer video;
+    void setupVideo();
+    
     int camWidth;
     int camHeight;
     
@@ -33,13 +42,13 @@ class ofApp : public ofBaseApp{
     ofxIntSlider laserBright;
     ofxFloatSlider d; // カメラとレーザーの距離
     ofxFloatSlider L; // カメラとスクリーンの距離
-
+    
+    bool debugFlag;
     bool guiFlag;
 
     void findLineCenter();
     void calc();
     void readLaserPixels(ofPixels pixels);
-    void setupCamera();
     void setupGui();
     
 };
