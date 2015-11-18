@@ -121,8 +121,8 @@ void ofApp::setupGui() {
     guiFlag = true;
     gui.setup();
     gui.add(laserBright.setup("laserBright",220,0,250));
-    gui.add(d.setup("d(mm)", 5, 0, 20));
-    gui.add(L.setup("L(mm)", 20, 0, 500));
+    gui.add(d.setup("d(mm)", 5, 0, 200));
+    gui.add(L.setup("L(mm)", 20, 0, 1000));
     gui.loadFromFile("settings.xml");
 }
 void ofApp::readLaserPixels(ofPixels pixels) {
