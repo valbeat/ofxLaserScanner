@@ -2,6 +2,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+    ofBackground(0, 0, 0);
     #ifdef _USE_LIVE_VIDEO
     setupCamera();
     #else
@@ -9,7 +11,15 @@ void ofApp::setup(){
     #endif
     setupGui();
     capture.allocate(camWidth, camHeight, GL_RGB);
+    capture.begin();
+    ofClear(0,255);
+    ofRect(0, 0, camWidth, camHeight);
+    capture.end();
     laserScan.allocate(camWidth, camHeight, GL_RGB);
+    laserScan.begin();
+    ofClear(0,255);
+//    ofRect(0, 0, camWidth, camHeight);
+    laserScan.end();
     // マウスカーソル非表示バグ回避
     ofHideCursor();
 
@@ -43,9 +53,12 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-//    laserScan.draw(0,0,camWidth,camHeight);
+    ofSetColor(255);
     capture.draw(0, 0, camWidth, camHeight);
+    ofSetColor(255,100);
+    laserScan.draw(0,0,camWidth,camHeight);
     if (guiFlag)
+        ofSetColor(255);
         gui.draw();
     
     
@@ -129,12 +142,14 @@ void ofApp::readLaserPixels(ofPixels pixels) {
     int w = pixels.getWidth();
     int h = pixels.getHeight();
     laserScan.begin();
+    ofClear(0,255);
     for (int y = 0; y < h; y+= 10) {
         for (int x = 0; x < w ; x++) {
             ofColor c = pixels.getColor(x, y);
             if(c.g > laserBright) {
                 ofSetColor(0,255,0);
                 ofRect(x, y, 1, 1);
+                ofSetColor(255, 255, 255);
             }
         }
     }
