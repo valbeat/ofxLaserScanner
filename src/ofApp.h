@@ -4,6 +4,8 @@
 #include "ofxGui.h"
 //#define _USE_LIVE_VIDEO
 #define VIDEO_NAME "test.mov"
+#define RESOLUSION_X 72
+#define RESOLUSION_Y 72
 
 class ofApp : public ofBaseApp{
 
@@ -47,8 +49,11 @@ class ofApp : public ofBaseApp{
     bool guiFlag;
 
     void findLineCenter();
-    void calc();
+    ofPoint calc(ofPoint);
     void readLaserPixels(ofPixels pixels);
     void setupGui();
+    
+    vector<ofPoint> laserPos;
+    float rot;
     
 };

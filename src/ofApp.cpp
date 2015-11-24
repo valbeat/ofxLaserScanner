@@ -48,6 +48,8 @@ void ofApp::update(){
         ofPixels pixels;
         capture.readToPixels(pixels);
         readLaserPixels(pixels);
+
+        
     }
 }
 
@@ -57,6 +59,17 @@ void ofApp::draw(){
     capture.draw(0, 0, camWidth, camHeight);
     ofSetColor(255,100);
     laserScan.draw(0,0,camWidth,camHeight);
+    
+    if (!laserPos.empty()) {
+        for (int i = 0; i < laserPos.size(); i++) {
+            ofPoint pos = laserPos[i];
+            cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << endl;
+            ofSetColor(255);
+        }
+        laserPos.clear();
+    }
+    
+    
     if (guiFlag)
         ofSetColor(255);
         gui.draw();
@@ -139,28 +152,52 @@ void ofApp::setupGui() {
     gui.loadFromFile("settings.xml");
 }
 void ofApp::readLaserPixels(ofPixels pixels) {
-    int w = pixels.getWidth();
-    int h = pixels.getHeight();
     laserScan.begin();
     ofClear(0,255);
+    laserScan.end();
+    int w = pixels.getWidth();
+    int h = pixels.getHeight();
+
     for (int y = 0; y < h; y+= 10) {
+        int sumX = 0,
+            countX = 0;
         for (int x = 0; x < w ; x++) {
             ofColor c = pixels.getColor(x, y);
             if(c.g > laserBright) {
-                ofSetColor(0,255,0);
-                ofRect(x, y, 1, 1);
-                ofSetColor(255, 255, 255);
+                sumX += x;
+                countX++;
             }
         }
+        if (countX) {
+            int avgX = sumX / countX;
+            laserPos.push_back(ofPoint(avgX,y));
+            laserScan.begin();
+            ofDisableSmoothing();
+            ofEnableBlendMode(OF_BLENDMODE_ADD);
+            ofSetColor(0,255,0);
+            ofRect(avgX, y, 1, 1);
+            ofSetColor(255, 255, 255);
+            ofEnableAlphaBlending();
+            ofEnableSmoothing();
+            laserScan.end();
+        }
     }
-    laserScan.end();
 }
 
-void ofApp::calc() {
+ofPoint ofApp::calc(ofPoint pos) {
     int x0;
     int Nx = camWidth; // スクリーン幅
     float Lw; //
     int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
     // dの[mm]→[pixel]変換
-    x0 = (int)(d * 72 / 25.4);
+    x0 = (int)(d * RESOLUSION_X / 25.4);
+    
+    Lw = Nx / RESOLUSION_X * 25.4;
+    float diff = abs(pos.x - lookPoint) - d;
+    float Xs,Ys,Zs;
+    ofPoint point3d;
+    point3d.z = -L * cos(rot) * (1 - Nx * d + Lw * diff);
+    point3d.x = L * sin(rot) * (1 - Nx * d + Lw * diff);
+    point3d.y = (-pos.y + 240) / RESOLUSION_Y;
+    return point3d;
 }
