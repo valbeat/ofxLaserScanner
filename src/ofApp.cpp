@@ -159,23 +159,22 @@ void ofApp::readLaserPixels(ofPixels pixels) {
     int h = pixels.getHeight();
 
     for (int y = 0; y < h; y+= 10) {
-        int sumX = 0,
-            countX = 0;
+        vector<int> v;
         for (int x = 0; x < w ; x++) {
             ofColor c = pixels.getColor(x, y);
             if(c.g > laserBright) {
-                sumX += x;
-                countX++;
+                v.push_back(x);
             }
         }
-        if (countX) {
-            int avgX = sumX / countX;
-            laserPos.push_back(ofPoint(avgX,y));
+        
+        if (!v.empty()) {
+            int mX = (int)median(v);
+            laserPos.push_back(ofPoint(mX,y));
             laserScan.begin();
             ofDisableSmoothing();
             ofEnableBlendMode(OF_BLENDMODE_ADD);
             ofSetColor(0,255,0);
-            ofRect(avgX, y, 1, 1);
+            ofRect(mX, y, 1, 1);
             ofSetColor(255, 255, 255);
             ofEnableAlphaBlending();
             ofEnableSmoothing();
@@ -190,14 +189,46 @@ ofPoint ofApp::calc(ofPoint pos) {
     float Lw; //
     int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
     // dの[mm]→[pixel]変換
-    x0 = (int)(d * RESOLUSION_X / 25.4);
+    x0 = (int)(d * RESOLUSION_WIDTH / 25.4);
     
-    Lw = Nx / RESOLUSION_X * 25.4;
+    Lw = Nx / RESOLUSION_WIDTH * 25.4;
     float diff = abs(pos.x - lookPoint) - d;
     float Xs,Ys,Zs;
     ofPoint point3d;
     point3d.z = -L * cos(rot) * (1 - Nx * d + Lw * diff);
     point3d.x = L * sin(rot) * (1 - Nx * d + Lw * diff);
-    point3d.y = (-pos.y + 240) / RESOLUSION_Y;
+    point3d.y = (-pos.y + 240) / RESOLUSION_HEIGHT;
     return point3d;
+}
+
+// 配列の平均値を返す
+float ofApp::mean(vector<int> v) {
+    int size = v.size();
+    int sum = 0;
+    for (int i = 0; i < size; i++){
+        sum += v[i];
+    }
+    return sum / size;
+}
+
+// 配列の中央値を返す
+float ofApp::median(vector<int> v) {
+    int size = v.size();
+    vector<int> _v;
+    copy(v.begin(), v.end(), back_inserter(_v));
+    int tmp;
+    for (int i = 0; i < size - 1; i++){
+        for (int j = i + 1; j < size; j++) {
+            if (_v[i] > _v[j]){
+                tmp = _v[i];
+                _v[i] = _v[j];
+                _v[j] = tmp;
+            }
+        }
+    }
+    if (size % 2 == 1) {
+        return _v[(size - 1) / 2];
+    } else {
+        return (_v[(size / 2) - 1] + _v[size / 2]) / 2;
+    }
 }

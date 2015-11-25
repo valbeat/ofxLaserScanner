@@ -4,8 +4,8 @@
 #include "ofxGui.h"
 //#define _USE_LIVE_VIDEO
 #define VIDEO_NAME "test.mov"
-#define RESOLUSION_X 72
-#define RESOLUSION_Y 72
+#define RESOLUSION_WIDTH 72
+#define RESOLUSION_HEIGHT 72
 
 class ofApp : public ofBaseApp{
 
@@ -55,5 +55,8 @@ class ofApp : public ofBaseApp{
     
     vector<ofPoint> laserPos;
     float rot;
+    
+    float mean(vector<int>);
+    float median(vector<int>);
     
 };
