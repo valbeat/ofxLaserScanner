@@ -47,6 +47,8 @@ class ofApp : public ofBaseApp{
     ofxFloatSlider d; // カメラとレーザーの距離
     ofxFloatSlider L; // カメラとスクリーンの距離
     
+    ofEasyCam cam;
+    
     bool debugFlag;
     bool guiFlag;
 

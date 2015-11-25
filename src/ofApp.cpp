@@ -21,6 +21,12 @@ void ofApp::setup(){
     laserScan.end();
     // マウスカーソル非表示バグ回避
     ofHideCursor();
+    
+    cam.setFov(80.0f);                 // カメラの水平視野角を８０度に設定
+    cam.setDistance(1.0f);          // カメラと見ているものの距離を1mに設定
+//    cam.setPosition((float)ofGetWidth()*-0.5, (float)ofGetHeight() * -0.75 , 0); // カメラの位置を設定
+//    cam.setTarget(model.getPosition()); // カメラが見る対象物を設定
+//    cam.lookAt(model.getPosition(),ofVec3f(0,-1,0) ); // 見る対象物の位置と、上向き方向を設定
 
 }
 //--------------------------------------------------------------
@@ -68,6 +74,12 @@ void ofApp::draw(){
         laserPos.clear();
     }
     
+//    cam.begin();
+//    ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
+//    ofSetHexColor(0xffffff);
+//    ofNoFill();
+//    ofBoxPrimitive(10, 10, 10);
+//    cam.end();
     
     if (guiFlag)
         ofSetColor(255);
@@ -170,7 +182,9 @@ void ofApp::readLaserPixels(ofPixels pixels) {
             int mX = (int)median(v);
             laserPos.push_back(ofPoint(mX,y));
             
+            // レーザーの中心を表示させる
             laserScan.begin();
+            // ブレンドモードをONにした時はスムージングを切る
             ofDisableSmoothing();
             ofEnableBlendMode(OF_BLENDMODE_ADD);
             ofSetColor(0,255,0);
@@ -183,6 +197,7 @@ void ofApp::readLaserPixels(ofPixels pixels) {
     }
 }
 
+// 計算部分
 void ofApp::calc(vector<ofPoint> posVec) {
     int x0;
     int Nx = camWidth; // スクリーン幅
