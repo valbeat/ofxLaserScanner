@@ -183,7 +183,7 @@ void ofApp::readLaserPixels(ofPixels pixels) {
     }
 }
 
-ofPoint ofApp::calc(ofPoint pos) {
+void ofApp::calc(vector<ofPoint> posVec) {
     int x0;
     int Nx = camWidth; // スクリーン幅
     float Lw; //
@@ -191,15 +191,17 @@ ofPoint ofApp::calc(ofPoint pos) {
     cout << lookPoint << endl;
     // dの[mm]→[pixel]変換
     x0 = (int)(d * RESOLUSION_WIDTH / 25.4);
-    
     Lw = Nx / RESOLUSION_WIDTH * 25.4;
-    float diff = abs(pos.x - lookPoint) - d;
-    float Xs,Ys,Zs;
-    ofPoint point3d;
-    point3d.z = -L * cos(rot) * (1 - Nx * d + Lw * diff);
-    point3d.x = L * sin(rot) * (1 - Nx * d + Lw * diff);
-    point3d.y = (-pos.y + 240) / RESOLUSION_HEIGHT;
-    return point3d;
+    for (int i = 0; i < posVec.size(); i++) {
+        ofPoint pos = posVec[i];
+        float diff = abs(pos.x - lookPoint) - d;
+        float Xs,Ys,Zs;
+        ofPoint point3d;
+        point3d.z = -L * cos(rot) * (1 - Nx * d + Lw * diff);
+        point3d.x = L * sin(rot) * (1 - Nx * d + Lw * diff);
+        point3d.y = (-pos.y + 240) / RESOLUSION_HEIGHT;
+        pos3Ds.push_back(point3d);
+    }
 }
 
 // 配列の平均値を返す

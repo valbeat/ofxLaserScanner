@@ -50,11 +50,12 @@ class ofApp : public ofBaseApp{
     bool debugFlag;
     bool guiFlag;
 
-    ofPoint calc(ofPoint);
+    void calc(vector<ofPoint>);
     void readLaserPixels(ofPixels pixels);
     void setupGui();
     
     vector<ofPoint> laserPos;
+    vector<ofPoint> pos3Ds;
     float rot;
     
     float mean(vector<int>);
