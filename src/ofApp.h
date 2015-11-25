@@ -36,7 +36,9 @@ class ofApp : public ofBaseApp{
     int camWidth;
     int camHeight;
     
-    ofFbo capture;
+    // ビデオまたはカメラからキャプチャした画像
+    ofFbo image;
+    // レーザー光があたっている場所
     ofFbo laserScan;
     
     //GUI
@@ -48,7 +50,6 @@ class ofApp : public ofBaseApp{
     bool debugFlag;
     bool guiFlag;
 
-    void findLineCenter();
     ofPoint calc(ofPoint);
     void readLaserPixels(ofPixels pixels);
     void setupGui();

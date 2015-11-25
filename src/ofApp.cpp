@@ -10,15 +10,14 @@ void ofApp::setup(){
     setupVideo();
     #endif
     setupGui();
-    capture.allocate(camWidth, camHeight, GL_RGB);
-    capture.begin();
+    image.allocate(camWidth, camHeight, GL_RGB);
+    image.begin();
     ofClear(0,255);
     ofRect(0, 0, camWidth, camHeight);
-    capture.end();
+    image.end();
     laserScan.allocate(camWidth, camHeight, GL_RGB);
     laserScan.begin();
     ofClear(0,255);
-//    ofRect(0, 0, camWidth, camHeight);
     laserScan.end();
     // マウスカーソル非表示バグ回避
     ofHideCursor();
@@ -36,17 +35,17 @@ void ofApp::update(){
     #endif
     if (isNewFrame) {
         #ifdef _USE_LIVE_VIDEO
-        capture.begin();
+        image.begin();
         camera.draw(0,0, camWidth, camHeight);
-        capture.end();
+        image.end();
         #else
-        capture.begin();
+        image.begin();
         video.draw(0, 0, camWidth, camHeight);
-        capture.end();
+        image.end();
         #endif
 
         ofPixels pixels;
-        capture.readToPixels(pixels);
+        image.readToPixels(pixels);
         readLaserPixels(pixels);
 
         
@@ -56,7 +55,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofSetColor(255);
-    capture.draw(0, 0, camWidth, camHeight);
+    image.draw(0, 0, camWidth, camHeight);
     ofSetColor(255,100);
     laserScan.draw(0,0,camWidth,camHeight);
     
@@ -170,6 +169,7 @@ void ofApp::readLaserPixels(ofPixels pixels) {
         if (!v.empty()) {
             int mX = (int)median(v);
             laserPos.push_back(ofPoint(mX,y));
+            
             laserScan.begin();
             ofDisableSmoothing();
             ofEnableBlendMode(OF_BLENDMODE_ADD);
@@ -188,6 +188,7 @@ ofPoint ofApp::calc(ofPoint pos) {
     int Nx = camWidth; // スクリーン幅
     float Lw; //
     int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
+    cout << lookPoint << endl;
     // dの[mm]→[pixel]変換
     x0 = (int)(d * RESOLUSION_WIDTH / 25.4);
     
