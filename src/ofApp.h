@@ -40,6 +40,8 @@ class ofApp : public ofBaseApp{
     ofFbo image;
     // レーザー光があたっている場所
     ofFbo laserScan;
+    // 3Dモデルをポイントクラウドで表示
+    ofMesh pointCloud;
     
     //GUI
     ofxPanel gui;
@@ -54,6 +56,7 @@ class ofApp : public ofBaseApp{
 
     void calc(vector<ofPoint>);
     void readLaserPixels(ofPixels pixels);
+    void createPointCloud();
     void setupGui();
     
     vector<ofPoint> laserPos;

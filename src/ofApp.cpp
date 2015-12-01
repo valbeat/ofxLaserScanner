@@ -2,7 +2,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+
+//    ofEnableDepthTest();
     ofBackground(0, 0, 0);
     #ifdef _USE_LIVE_VIDEO
     setupCamera();
@@ -22,12 +23,6 @@ void ofApp::setup(){
     // マウスカーソル非表示バグ回避
     ofHideCursor();
     
-    cam.setFov(80.0f);                 // カメラの水平視野角を８０度に設定
-    cam.setDistance(1.0f);          // カメラと見ているものの距離を1mに設定
-//    cam.setPosition((float)ofGetWidth()*-0.5, (float)ofGetHeight() * -0.75 , 0); // カメラの位置を設定
-//    cam.setTarget(model.getPosition()); // カメラが見る対象物を設定
-//    cam.lookAt(model.getPosition(),ofVec3f(0,-1,0) ); // 見る対象物の位置と、上向き方向を設定
-
 }
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -53,38 +48,27 @@ void ofApp::update(){
         ofPixels pixels;
         image.readToPixels(pixels);
         readLaserPixels(pixels);
-
         
+        createPointCloud();
+        laserPos.clear();
+
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     ofSetColor(255);
     image.draw(0, 0, camWidth, camHeight);
+    ofDisableBlendMode();
     ofSetColor(255,100);
     laserScan.draw(0,0,camWidth,camHeight);
     
-    if (!laserPos.empty()) {
-        for (int i = 0; i < laserPos.size(); i++) {
-            ofPoint pos = laserPos[i];
-            cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << endl;
-            ofSetColor(255);
-        }
-        laserPos.clear();
-    }
     
-//    cam.begin();
-//    ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
-//    ofSetHexColor(0xffffff);
-//    ofNoFill();
-//    ofBoxPrimitive(10, 10, 10);
-//    cam.end();
-    
-    if (guiFlag)
+    if (guiFlag) {
         ofSetColor(255);
         gui.draw();
-    
+    }
     
 }
 
@@ -193,6 +177,15 @@ void ofApp::readLaserPixels(ofPixels pixels) {
             ofEnableAlphaBlending();
             ofEnableSmoothing();
             laserScan.end();
+        }
+    }
+}
+
+void ofApp::createPointCloud() {
+    if (!laserPos.empty()) {
+        for (int i = 0; i < laserPos.size(); i++) {
+            ofPoint pos = laserPos[i];
+            cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << endl;
         }
     }
 }
