@@ -9,6 +9,7 @@ void ofApp::setup(){
     #else
     setupVideo();
     #endif
+    
     setupGui();
     
     image.allocate(camWidth, camHeight, GL_RGB);
@@ -58,9 +59,14 @@ void ofApp::update(){
         image.readToPixels(pixels);
         readLaserPixels(pixels);
         
+        
+        calc();
+        
         createPointCloud();
         
+        
         preview.begin();
+        ofTranslate(camWidth /2, 0);
         pointCloud.draw();
         preview.end();
         
@@ -146,6 +152,7 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+//--------------------------------------------------------------
 void ofApp::setupCamera() {
     camWidth = 640;
     camHeight = 480;
@@ -156,20 +163,34 @@ void ofApp::setupCamera() {
     camera.setDeviceID(0);
     camera.initGrabber(camWidth,camHeight);
 }
+//--------------------------------------------------------------
 void ofApp::setupVideo() {
     camWidth = 640;
     camHeight = 480;
     video.loadMovie(VIDEO_NAME);
     video.play();
 }
+//--------------------------------------------------------------
 void ofApp::setupGui() {
+    //ボタンの動作設定
+    updateRotateButton.addListener(this, &ofApp::updateRotateButtonPressed);
+    
     guiFlag = true;
     gui.setup();
     gui.add(laserBright.setup("laserBright",220,0,250));
     gui.add(d.setup("d(mm)", 5, 0, 200));
     gui.add(L.setup("L(mm)", 20, 0, 1000));
+    gui.add(rotate.setup("theta",0,0,360));
+    gui.add(rotateInterval.setup("+theta",1,0,360));
+    gui.add(updateRotateButton.setup("update Rotate"));
     gui.loadFromFile("settings.xml");
+    
 }
+//--------------------------------------------------------------
+void ofApp::updateRotateButtonPressed() {
+//    rotate += rotateInterval;
+}
+//--------------------------------------------------------------
 void ofApp::readLaserPixels(ofPixels pixels) {
     laserScan.begin();
     ofClear(0,255);
@@ -204,39 +225,45 @@ void ofApp::readLaserPixels(ofPixels pixels) {
         }
     }
 }
-
+//--------------------------------------------------------------
+// ポイントクラウド生成
 void ofApp::createPointCloud() {
-    if (!laserPos.empty()) {
-        for (int i = 0; i < laserPos.size(); i++) {
-            ofPoint pos = laserPos[i];
-            cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << endl;
+    if (!pos3Ds.empty()) {
+        for (int i = 0; i < pos3Ds.size(); i++) {
+            ofPoint pos = pos3Ds[i];
+            cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << " z:" << pos.z << endl;
             pointCloud.addVertex(pos);
         }
     }
+    pos3Ds.clear();
 }
-
+//--------------------------------------------------------------
 // 計算部分
-void ofApp::calc(vector<ofPoint> posVec) {
+void ofApp::calc() {
     int x0;
     int Nx = camWidth; // スクリーン幅
     float Lw; //
     int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
-    cout << lookPoint << endl;
+
     // dの[mm]→[pixel]変換
     x0 = (int)(d * RESOLUSION_WIDTH / 25.4);
     Lw = Nx / RESOLUSION_WIDTH * 25.4;
-    for (int i = 0; i < posVec.size(); i++) {
-        ofPoint pos = posVec[i];
+    for (int i = 0; i < laserPos.size(); i++) {
+        ofPoint pos = laserPos[i];
         float diff = abs(pos.x - lookPoint) - d;
-        float Xs,Ys,Zs;
+//        float Xs,Ys,Zs;
         ofPoint point3d;
-        point3d.z = -L * cos(rot) * (1 - Nx * d + Lw * diff);
-        point3d.x = L * sin(rot) * (1 - Nx * d + Lw * diff);
-        point3d.y = (-pos.y + 240) / RESOLUSION_HEIGHT;
+        float rad = rotate * DEG_TO_RAD;
+        point3d.z = cos(rad) * diff;
+        point3d.x = sin(rad) * diff;
+        point3d.y = pos.y;
+//        point3d.z = -L * cos(rad) * (1 - Nx * d + Lw * diff);
+//        point3d.x = L * sin(rad) * (1 - Nx * d + Lw * diff);
+//        point3d.y = (-pos.y + 240) / RESOLUSION_HEIGHT;
         pos3Ds.push_back(point3d);
     }
 }
-
+//--------------------------------------------------------------
 // 配列の平均値を返す
 float ofApp::mean(vector<int> v) {
     int size = v.size();
@@ -246,7 +273,7 @@ float ofApp::mean(vector<int> v) {
     }
     return sum / size;
 }
-
+//--------------------------------------------------------------
 // 配列の中央値を返す
 float ofApp::median(vector<int> v) {
     int size = v.size();
@@ -268,3 +295,4 @@ float ofApp::median(vector<int> v) {
         return (_v[(size / 2) - 1] + _v[size / 2]) / 2;
     }
 }
+//--------------------------------------------------------------

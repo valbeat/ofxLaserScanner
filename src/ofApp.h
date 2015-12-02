@@ -51,20 +51,26 @@ class ofApp : public ofBaseApp{
     ofxIntSlider laserBright;
     ofxFloatSlider d; // カメラとレーザーの距離
     ofxFloatSlider L; // カメラとスクリーンの距離
+    ofxIntSlider rotate; // 回転角
+    ofxIntSlider rotateInterval; // 回転量
+    ofxButton updateRotateButton; // 回転角を回転量分増やすボタン
+    void updateRotateButtonPressed(); // 回転角を増やすボタンの関数
     
     ofEasyCam cam;
     
     bool debugFlag;
     bool guiFlag;
 
-    void calc(vector<ofPoint>);
+    void calc();
     void readLaserPixels(ofPixels pixels);
     void createPointCloud();
     void setupGui();
     
+    
     vector<ofPoint> laserPos;
     vector<ofPoint> pos3Ds;
-    float rot;
+ 
+    void setRotate(int angle);
     
     float mean(vector<int>);
     float median(vector<int>);
