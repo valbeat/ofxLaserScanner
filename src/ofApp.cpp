@@ -26,6 +26,9 @@ void ofApp::setup(){
     ofClear(0,255);
     preview.end();
     
+    pointCloud.clearVertices();
+    pointCloud.setMode(OF_PRIMITIVE_POINTS);
+    
     // マウスカーソル非表示バグ回避
     ofHideCursor();
     
@@ -56,6 +59,11 @@ void ofApp::update(){
         readLaserPixels(pixels);
         
         createPointCloud();
+        
+        preview.begin();
+        pointCloud.draw();
+        preview.end();
+        
         laserPos.clear();
 
     }
@@ -72,10 +80,13 @@ void ofApp::draw(){
     laserScan.draw(0,0,camWidth,camHeight);
     ofDisableBlendMode();
     
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(3);
     ofEnableDepthTest();
     ofSetColor(255);
     preview.draw(camWidth,0,camWidth,camHeight);
     ofDisableDepthTest();
+    glDisable(GL_POINT_SMOOTH);
     
     
     if (guiFlag) {
@@ -199,6 +210,7 @@ void ofApp::createPointCloud() {
         for (int i = 0; i < laserPos.size(); i++) {
             ofPoint pos = laserPos[i];
             cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << endl;
+            pointCloud.addVertex(pos);
         }
     }
 }
