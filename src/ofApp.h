@@ -40,6 +40,9 @@ class ofApp : public ofBaseApp{
     ofFbo image;
     // レーザー光があたっている場所
     ofFbo laserScan;
+    
+    // 3Dモデルプレビュー
+    ofFbo preview;
     // 3Dモデルをポイントクラウドで表示
     ofMesh pointCloud;
     

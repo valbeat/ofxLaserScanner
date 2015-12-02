@@ -3,7 +3,6 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-//    ofEnableDepthTest();
     ofBackground(0, 0, 0);
     #ifdef _USE_LIVE_VIDEO
     setupCamera();
@@ -11,15 +10,22 @@ void ofApp::setup(){
     setupVideo();
     #endif
     setupGui();
+    
     image.allocate(camWidth, camHeight, GL_RGB);
     image.begin();
     ofClear(0,255);
-    ofRect(0, 0, camWidth, camHeight);
     image.end();
+    
     laserScan.allocate(camWidth, camHeight, GL_RGB);
     laserScan.begin();
     ofClear(0,255);
     laserScan.end();
+    
+    preview.allocate(camWidth, camHeight, GL_RGB);
+    preview.begin();
+    ofClear(0,255);
+    preview.end();
+    
     // マウスカーソル非表示バグ回避
     ofHideCursor();
     
@@ -57,12 +63,19 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+    
     ofSetColor(255);
     image.draw(0, 0, camWidth, camHeight);
-    ofDisableBlendMode();
+
+    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     ofSetColor(255,100);
     laserScan.draw(0,0,camWidth,camHeight);
+    ofDisableBlendMode();
+    
+    ofEnableDepthTest();
+    ofSetColor(255);
+    preview.draw(camWidth,0,camWidth,camHeight);
+    ofDisableDepthTest();
     
     
     if (guiFlag) {
