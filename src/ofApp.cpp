@@ -11,6 +11,7 @@ void ofApp::setup(){
     #endif
     
     setupGui();
+    setupCam3d();
     
     image.allocate(camWidth, camHeight, GL_RGB);
     image.begin();
@@ -45,6 +46,9 @@ void ofApp::update(){
     isNewFrame = video.isFrameNew();
     #endif
     if (isNewFrame) {
+        if (isStart) {
+            updateRotate();
+        }
         #ifdef _USE_LIVE_VIDEO
         image.begin();
         camera.draw(0,0, camWidth, camHeight);
@@ -66,8 +70,11 @@ void ofApp::update(){
         
         
         preview.begin();
-        ofTranslate(camWidth /2, 0);
+        ofClear(0);
+//        ofTranslate(camWidth / 2, 0);
+        cam3d.begin();
         pointCloud.draw();
+        cam3d.end();
         preview.end();
         
         laserPos.clear();
@@ -94,6 +101,10 @@ void ofApp::draw(){
     ofDisableDepthTest();
     glDisable(GL_POINT_SMOOTH);
     
+    ofSetColor(255, 0, 0);
+    ofRect(camWidth / 2 - x0, 0, 1, camHeight);
+    ofSetColor(255);
+    
     
     if (guiFlag) {
         ofSetColor(255);
@@ -107,6 +118,9 @@ void ofApp::keyPressed(int key){
     switch (key) {
         case 'g' :
             (guiFlag == false) ? guiFlag = true : guiFlag = false;
+            break;
+        case 'f':
+            ofToggleFullscreen();
             break;
     }
 
@@ -170,25 +184,55 @@ void ofApp::setupVideo() {
     video.loadMovie(VIDEO_NAME);
     video.play();
 }
+
+void ofApp::setupCam3d() {
+    cam3d.setNearClip(1e-4);
+    cam3d.setFarClip(1000);
+    cam3d.setDistance(0);
+    cam3d.setPosition(0,0,-100);
+    cam3d.lookAt(ofVec3f(0,0,1));
+}
+
 //--------------------------------------------------------------
 void ofApp::setupGui() {
     //ボタンの動作設定
     updateRotateButton.addListener(this, &ofApp::updateRotateButtonPressed);
+    resetPointsButton.addListener(this, &ofApp::resetPointsButtonPressed);
+    startScanButton.addListener(this, &ofApp::startScanButtonPressed);
     
     guiFlag = true;
     gui.setup();
-    gui.add(laserBright.setup("laserBright",220,0,250));
-    gui.add(d.setup("d(mm)", 5, 0, 200));
-    gui.add(L.setup("L(mm)", 20, 0, 1000));
+    gui.add(laserBright.setup("laserBright",250,0,255));
+    gui.add(d.setup("d(mm)", 60, 0, 200));
+    gui.add(L.setup("L(mm)", 260, 0, 1000));
     gui.add(rotate.setup("theta",0,0,360));
-    gui.add(rotateInterval.setup("+theta",1,0,360));
-    gui.add(updateRotateButton.setup("update Rotate"));
+//    gui.add(rotateInterval.setup("+theta",1,0,360));
+    gui.add(updateRotateButton.setup("theta++"));
+    gui.add(startScanButton.setup("start"));
+    gui.add(resetPointsButton.setup("reset"));
     gui.loadFromFile("settings.xml");
     
 }
 //--------------------------------------------------------------
+void ofApp::updateRotate() {
+    int r = rotate;
+    if (r > 360) return;
+    r++;
+    rotate.operator=(r);
+}
+//--------------------------------------------------------------
 void ofApp::updateRotateButtonPressed() {
-//    rotate += rotateInterval;
+    updateRotate();
+}
+//--------------------------------------------------------------
+void ofApp::startScanButtonPressed() {
+    isStart ? isStart = false : isStart = true;
+}
+//--------------------------------------------------------------
+void ofApp::resetPointsButtonPressed() {
+    pointCloud.clear();
+    isStart = false;
+    rotate.operator=(0);
 }
 //--------------------------------------------------------------
 void ofApp::readLaserPixels(ofPixels pixels) {
@@ -231,7 +275,7 @@ void ofApp::createPointCloud() {
     if (!pos3Ds.empty()) {
         for (int i = 0; i < pos3Ds.size(); i++) {
             ofPoint pos = pos3Ds[i];
-            cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << " z:" << pos.z << endl;
+//            cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << " z:" << pos.z << endl;
             pointCloud.addVertex(pos);
         }
     }
@@ -240,27 +284,28 @@ void ofApp::createPointCloud() {
 //--------------------------------------------------------------
 // 計算部分
 void ofApp::calc() {
-    int x0;
-    int Nx = camWidth; // スクリーン幅
-    float Lw; //
-    int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
 
+    int Nx = camWidth; // スクリーン幅[pixel]
+    float Lw; // スクリーン幅[mm]
+    int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
+    
     // dの[mm]→[pixel]変換
-    x0 = (int)(d * RESOLUSION_WIDTH / 25.4);
-    Lw = Nx / RESOLUSION_WIDTH * 25.4;
+    x0 = (int)(d * RESOLUSION_WIDTH / 25.4); // [pixel]
+    Lw = Nx / RESOLUSION_WIDTH * 25.4; // [mm]
     for (int i = 0; i < laserPos.size(); i++) {
         ofPoint pos = laserPos[i];
-        float diff = abs(pos.x - lookPoint) - d;
+        float diff = abs(abs(pos.x - lookPoint) - x0);
 //        float Xs,Ys,Zs;
-        ofPoint point3d;
+        ofPoint p;
         float rad = rotate * DEG_TO_RAD;
-        point3d.z = cos(rad) * diff;
-        point3d.x = sin(rad) * diff;
-        point3d.y = pos.y;
-//        point3d.z = -L * cos(rad) * (1 - Nx * d + Lw * diff);
+        p.z = cos(rad) * diff * Nx * L * d;
+        p.x = sin(rad) * diff;
+        p.y = -pos.y + camHeight / 2;
+//        p.z = (Nx * L * d) / (Nx * d + Lw * diff);
+//        p.z = d *  / ;
 //        point3d.x = L * sin(rad) * (1 - Nx * d + Lw * diff);
 //        point3d.y = (-pos.y + 240) / RESOLUSION_HEIGHT;
-        pos3Ds.push_back(point3d);
+        pos3Ds.push_back(p);
     }
 }
 //--------------------------------------------------------------

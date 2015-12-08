@@ -4,8 +4,9 @@
 #include "ofxGui.h"
 //#define _USE_LIVE_VIDEO
 #define VIDEO_NAME "test.mov"
-#define RESOLUSION_WIDTH 72
-#define RESOLUSION_HEIGHT 72
+// oFの解像度 [dpi]
+#define RESOLUSION_WIDTH 110
+#define RESOLUSION_HEIGHT 110
 
 class ofApp : public ofBaseApp{
 
@@ -55,8 +56,17 @@ class ofApp : public ofBaseApp{
     ofxIntSlider rotateInterval; // 回転量
     ofxButton updateRotateButton; // 回転角を回転量分増やすボタン
     void updateRotateButtonPressed(); // 回転角を増やすボタンの関数
+    ofxButton resetPointsButton;
+    void resetPointsButtonPressed();
+    ofxButton startScanButton;
+    void startScanButtonPressed();
     
-    ofEasyCam cam;
+    void updateRotate();
+    
+    bool isStart;
+    
+    
+    ofEasyCam cam3d;
     
     bool debugFlag;
     bool guiFlag;
@@ -65,6 +75,7 @@ class ofApp : public ofBaseApp{
     void readLaserPixels(ofPixels pixels);
     void createPointCloud();
     void setupGui();
+    void setupCam3d();
     
     
     vector<ofPoint> laserPos;
@@ -74,5 +85,7 @@ class ofApp : public ofBaseApp{
     
     float mean(vector<int>);
     float median(vector<int>);
+    
+    int x0;
     
 };
