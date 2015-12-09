@@ -71,7 +71,6 @@ void ofApp::update(){
         
         preview.begin();
         ofClear(0);
-//        ofTranslate(camWidth / 2, 0);
         cam3d.begin();
         pointCloud.draw();
         cam3d.end();
@@ -206,7 +205,6 @@ void ofApp::setupGui() {
     gui.add(d.setup("d(mm)", 60, 0, 200));
     gui.add(Lz.setup("Lz(mm)", 260, 0, 1000));
     gui.add(rotate.setup("theta",0,0,360));
-//    gui.add(rotateInterval.setup("+theta",1,0,360));
     gui.add(updateRotateButton.setup("theta++"));
     gui.add(startScanButton.setup("start"));
     gui.add(resetPointsButton.setup("reset"));
@@ -275,7 +273,6 @@ void ofApp::createPointCloud() {
     if (!pos3Ds.empty()) {
         for (int i = 0; i < pos3Ds.size(); i++) {
             ofPoint pos = pos3Ds[i];
-//            cout <<  "i:" << i << " x:" << pos.x << " y:" << pos.y << " z:" << pos.z << endl;
             pointCloud.addVertex(pos);
         }
     }
@@ -298,9 +295,6 @@ void ofApp::calc() {
         diff > 0 ? diff : diff = 0;
         ofPoint p;
         float rad = rotate * DEG_TO_RAD;
-//        p.z = cos(rad) * diff;
-//        p.x = sin(rad) * diff;
-//        p.y = -pos.y + camHeight / 2;
         p.y = (-pos.y + camHeight / 2) / RESOLUSION_HEIGHT * 25.4;
         p.z = - Lz * cos(rad) * (1 - Nx * d / (Nx * d + Lw * diff));
         p.x = Lz * sin(rad) * (1 - Nx * d / (Nx * d + Lw * diff));
