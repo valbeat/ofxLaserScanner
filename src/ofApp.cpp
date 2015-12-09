@@ -13,6 +13,8 @@ void ofApp::setup(){
     setupGui();
     setupCam3d();
     
+    
+    
     image.allocate(camWidth, camHeight, GL_RGB);
     image.begin();
     ofClear(0,255);
@@ -27,6 +29,9 @@ void ofApp::setup(){
     preview.begin();
     ofClear(0,255);
     preview.end();
+    
+    
+//    vbo.setVertexData(pos3Ds,NUM_VERTEX, GL_DYNAMIC_DRAW);
     
     pointCloud.clearVertices();
     pointCloud.setMode(OF_PRIMITIVE_POINTS);

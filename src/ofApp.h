@@ -2,11 +2,17 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+
 //#define _USE_LIVE_VIDEO
 #define VIDEO_NAME "test.mov"
+
 // oFの解像度 [dpi]
 #define RESOLUSION_WIDTH 72
 #define RESOLUSION_HEIGHT 72
+
+#define LASER_PIXELS 480 // ラインレーザーの最大値
+#define MAX_ROTATE 360 // 回転の最大値
+#define NUM_VERTEX LASER_PIXELS * MAX_ROTATE // 最大頂点
 
 class ofApp : public ofBaseApp{
 
