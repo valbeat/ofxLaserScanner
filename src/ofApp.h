@@ -24,7 +24,6 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-
     
 
     //ライブカメラを使用する際には、カメラ入力を準備
@@ -50,8 +49,9 @@ class ofApp : public ofBaseApp{
     //GUI
     ofxPanel gui;
     ofxIntSlider laserBright;
-    ofxFloatSlider d; // カメラとレーザーの距離[mm]
-    ofxFloatSlider Lz; // カメラとスクリーンの距離[mm]
+    ofxIntSlider d; // カメラとレーザーの距離[mm]
+    ofxIntSlider Lz; // カメラとスクリーンの距離[mm]
+    ofxIntSlider laserPointInterval; // レーザーポインタの間隔
     ofxIntSlider rotate; // 回転角
     ofxIntSlider rotateInterval; // 回転量
     ofxButton updateRotateButton; // 回転角を回転量分増やすボタン
@@ -65,7 +65,6 @@ class ofApp : public ofBaseApp{
     
     bool isStart;
     
-    
     ofEasyCam cam3d;
     
     bool debugFlag;
@@ -77,8 +76,11 @@ class ofApp : public ofBaseApp{
     void setupGui();
     void setupCam3d();
     
-    
+    // スクリーン上でレーザーが当たっている位置
     vector<ofPoint> laserPos;
+    // vbo
+    ofVbo vbo;
+    // ポインタの座標
     vector<ofPoint> pos3Ds;
  
     void setRotate(int angle);

@@ -204,8 +204,10 @@ void ofApp::setupGui() {
     gui.add(laserBright.setup("laserBright",250,0,255));
     gui.add(d.setup("d(mm)", 60, 0, 200));
     gui.add(Lz.setup("Lz(mm)", 260, 0, 1000));
+    gui.add(laserPointInterval.setup("laser Interval", 5,1,10));
     gui.add(rotate.setup("theta",0,0,360));
-    gui.add(updateRotateButton.setup("theta++"));
+    gui.add(rotateInterval.setup("rotateInterval",1,1,90));
+    gui.add(updateRotateButton.setup("theta += rotateInterval"));
     gui.add(startScanButton.setup("start"));
     gui.add(resetPointsButton.setup("reset"));
     gui.loadFromFile("settings.xml");
@@ -215,7 +217,7 @@ void ofApp::setupGui() {
 void ofApp::updateRotate() {
     int r = rotate;
     if (r > 360) return;
-    r++;
+    r+= rotateInterval;
     rotate.operator=(r);
 }
 //--------------------------------------------------------------
@@ -240,7 +242,7 @@ void ofApp::readLaserPixels(ofPixels pixels) {
     int w = pixels.getWidth();
     int h = pixels.getHeight();
 
-    for (int y = 0; y < h; y+= 10) {
+    for (int y = 0; y < h; y+= laserPointInterval) {
         vector<int> v;
         for (int x = 0; x < w ; x++) {
             ofColor c = pixels.getColor(x, y);
@@ -283,7 +285,8 @@ void ofApp::createPointCloud() {
 void ofApp::calc() {
 
     int Nx = camWidth; // スクリーン幅[pixel]
-    float Lw; // スクリーン幅[mm]
+    int Ny = camHeight;
+    float Lw; // スクリーンの大きさ[mm]
     int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
     
     // レーザーの基準値 dの[mm]→[pixel]変換
@@ -292,7 +295,7 @@ void ofApp::calc() {
     for (int i = 0; i < laserPos.size(); i++) {
         ofPoint pos = laserPos[i];
         float diff = abs(pos.x - lookPoint) - x0;
-        diff > 0 ? diff : diff = 0;
+        if(diff < 0) diff = 0;
         ofPoint p;
         float rad = rotate * DEG_TO_RAD;
         p.y = (-pos.y + camHeight / 2) / RESOLUSION_HEIGHT * 25.4;
