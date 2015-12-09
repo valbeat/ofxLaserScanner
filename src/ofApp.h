@@ -5,8 +5,8 @@
 //#define _USE_LIVE_VIDEO
 #define VIDEO_NAME "test.mov"
 // oFの解像度 [dpi]
-#define RESOLUSION_WIDTH 110
-#define RESOLUSION_HEIGHT 110
+#define RESOLUSION_WIDTH 72
+#define RESOLUSION_HEIGHT 72
 
 class ofApp : public ofBaseApp{
 
@@ -50,8 +50,8 @@ class ofApp : public ofBaseApp{
     //GUI
     ofxPanel gui;
     ofxIntSlider laserBright;
-    ofxFloatSlider d; // カメラとレーザーの距離
-    ofxFloatSlider L; // カメラとスクリーンの距離
+    ofxFloatSlider d; // カメラとレーザーの距離[mm]
+    ofxFloatSlider Lz; // カメラとスクリーンの距離[mm]
     ofxIntSlider rotate; // 回転角
     ofxIntSlider rotateInterval; // 回転量
     ofxButton updateRotateButton; // 回転角を回転量分増やすボタン

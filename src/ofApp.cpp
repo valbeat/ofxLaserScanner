@@ -204,7 +204,7 @@ void ofApp::setupGui() {
     gui.setup();
     gui.add(laserBright.setup("laserBright",250,0,255));
     gui.add(d.setup("d(mm)", 60, 0, 200));
-    gui.add(L.setup("L(mm)", 260, 0, 1000));
+    gui.add(Lz.setup("Lz(mm)", 260, 0, 1000));
     gui.add(rotate.setup("theta",0,0,360));
 //    gui.add(rotateInterval.setup("+theta",1,0,360));
     gui.add(updateRotateButton.setup("theta++"));
@@ -261,7 +261,7 @@ void ofApp::readLaserPixels(ofPixels pixels) {
             ofDisableSmoothing();
             ofEnableBlendMode(OF_BLENDMODE_ADD);
             ofSetColor(0,255,0);
-            ofRect(mX, y, 1, 1);
+            ofRect(mX - 1, y, 2, 2);
             ofSetColor(255, 255, 255);
             ofEnableAlphaBlending();
             ofEnableSmoothing();
@@ -289,22 +289,21 @@ void ofApp::calc() {
     float Lw; // スクリーン幅[mm]
     int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
     
-    // dの[mm]→[pixel]変換
+    // レーザーの基準値 dの[mm]→[pixel]変換
     x0 = (int)(d * RESOLUSION_WIDTH / 25.4); // [pixel]
     Lw = Nx / RESOLUSION_WIDTH * 25.4; // [mm]
     for (int i = 0; i < laserPos.size(); i++) {
         ofPoint pos = laserPos[i];
-        float diff = abs(abs(pos.x - lookPoint) - x0);
-//        float Xs,Ys,Zs;
+        float diff = abs(pos.x - lookPoint) - x0;
+        diff > 0 ? diff : diff = 0;
         ofPoint p;
         float rad = rotate * DEG_TO_RAD;
-        p.z = cos(rad) * diff * Nx * L * d;
-        p.x = sin(rad) * diff;
-        p.y = -pos.y + camHeight / 2;
-//        p.z = (Nx * L * d) / (Nx * d + Lw * diff);
-//        p.z = d *  / ;
-//        point3d.x = L * sin(rad) * (1 - Nx * d + Lw * diff);
-//        point3d.y = (-pos.y + 240) / RESOLUSION_HEIGHT;
+//        p.z = cos(rad) * diff;
+//        p.x = sin(rad) * diff;
+//        p.y = -pos.y + camHeight / 2;
+        p.y = (-pos.y + camHeight / 2) / RESOLUSION_HEIGHT * 25.4;
+        p.z = - Lz * cos(rad) * (1 - Nx * d / (Nx * d + Lw * diff));
+        p.x = Lz * sin(rad) * (1 - Nx * d / (Nx * d + Lw * diff));
         pos3Ds.push_back(p);
     }
 }
