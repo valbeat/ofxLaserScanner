@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxDelaunay.h"
 
 //#define _USE_LIVE_VIDEO
 #define VIDEO_NAME "test.mov"
@@ -86,14 +87,21 @@ class ofApp : public ofBaseApp{
     vector<ofPoint> laserPos;
     // vbo
     ofVbo vbo;
-    // ポインタの座標
-    vector<ofPoint> pos3Ds;
- 
+    // レーザーの座標を蓄えておく
+    vector<ofPoint> pts;
+    // 現在のフレームの座標
+    vector<ofPoint> pts_temp;
+    
     void setRotate(int angle);
     
     float mean(vector<int>);
     float median(vector<int>);
     
     int x0;
+    
+    ofxDelaunay delaunay;
+    // ドロネー分割でメッシュを生成する
+    // 頂点数が多すぎて使えない?
+    void createDelaunay();
     
 };

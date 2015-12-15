@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FB02D5F1C1F9DCE0007CB80 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */; };
+		0FB02D601C1F9DCE0007CB80 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */; };
 		0FD558121BE063D700E8B87F /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FD558011BE063D700E8B87F /* ofxBaseGui.cpp */; };
 		0FD558131BE063D700E8B87F /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FD558031BE063D700E8B87F /* ofxButton.cpp */; };
 		0FD558141BE063D700E8B87F /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FD558061BE063D700E8B87F /* ofxGuiGroup.cpp */; };
@@ -95,6 +97,10 @@
 		087522EA37A32B8D902CAB64 /* core_c.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = core_c.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/core_c.h; sourceTree = SOURCE_ROOT; };
 		096CB33CAD6C5A446E7026E9 /* dynamic_bitset.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = dynamic_bitset.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/dynamic_bitset.h; sourceTree = SOURCE_ROOT; };
 		0CF0AA3895D28E97D8A1E4A9 /* ground_truth.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ground_truth.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/ground_truth.h; sourceTree = SOURCE_ROOT; };
+		0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
+		0FB02D591C1F9DCE0007CB80 /* ofxDelaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
+		0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
+		0FB02D5E1C1F9DCE0007CB80 /* Delaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Delaunay.h; sourceTree = "<group>"; };
 		0FD558011BE063D700E8B87F /* ofxBaseGui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBaseGui.cpp; sourceTree = "<group>"; };
 		0FD558021BE063D700E8B87F /* ofxBaseGui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBaseGui.h; sourceTree = "<group>"; };
 		0FD558031BE063D700E8B87F /* ofxButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxButton.cpp; sourceTree = "<group>"; };
@@ -320,6 +326,51 @@
 				59626D03C690200AD4E8B3A6 /* ml.hpp */,
 			);
 			name = ml;
+			sourceTree = "<group>";
+		};
+		0FB02D561C1F9DCE0007CB80 /* ofxDelaunay */ = {
+			isa = PBXGroup;
+			children = (
+				0FB02D571C1F9DCE0007CB80 /* src */,
+				0FB02D5A1C1F9DCE0007CB80 /* libs */,
+			);
+			name = ofxDelaunay;
+			sourceTree = "<group>";
+		};
+		0FB02D571C1F9DCE0007CB80 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */,
+				0FB02D591C1F9DCE0007CB80 /* ofxDelaunay.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxDelaunay/src;
+			sourceTree = "<group>";
+		};
+		0FB02D5A1C1F9DCE0007CB80 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				0FB02D5B1C1F9DCE0007CB80 /* Delaunay */,
+			);
+			name = libs;
+			path = ../../../addons/ofxDelaunay/libs;
+			sourceTree = "<group>";
+		};
+		0FB02D5B1C1F9DCE0007CB80 /* Delaunay */ = {
+			isa = PBXGroup;
+			children = (
+				0FB02D5C1C1F9DCE0007CB80 /* src */,
+			);
+			path = Delaunay;
+			sourceTree = "<group>";
+		};
+		0FB02D5C1C1F9DCE0007CB80 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */,
+				0FB02D5E1C1F9DCE0007CB80 /* Delaunay.h */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		0FD557FF1BE063D700E8B87F /* ofxGui */ = {
@@ -609,6 +660,7 @@
 				A0B90D3B0ADB9C1716816714 /* ofxOpenCv */,
 				6025FAF6414C2CA589764D26 /* ofxCv */,
 				0FD557FF1BE063D700E8B87F /* ofxGui */,
+				0FB02D561C1F9DCE0007CB80 /* ofxDelaunay */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -882,6 +934,7 @@
 				6AABAB39E82AF5CFEA23A205 /* ContourFinder.cpp in Sources */,
 				0FD558181BE063D700E8B87F /* ofxSliderGroup.cpp in Sources */,
 				0FD558151BE063D700E8B87F /* ofxLabel.cpp in Sources */,
+				0FB02D601C1F9DCE0007CB80 /* Delaunay.cpp in Sources */,
 				45CC483A999BF1065A6B926C /* Distance.cpp in Sources */,
 				0FD558191BE063D700E8B87F /* ofxToggle.cpp in Sources */,
 				5CC34D433F5806179935B89D /* Flow.cpp in Sources */,
@@ -891,6 +944,7 @@
 				7CDAD32BE4FA46701E3552C7 /* RunningBackground.cpp in Sources */,
 				10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */,
 				0FD558171BE063D700E8B87F /* ofxSlider.cpp in Sources */,
+				0FB02D5F1C1F9DCE0007CB80 /* ofxDelaunay.cpp in Sources */,
 				0FD558121BE063D700E8B87F /* ofxBaseGui.cpp in Sources */,
 				A6668C5B1272D7FCD5B5A16F /* Utilities.cpp in Sources */,
 				DBCB84A37F9AECC254870D79 /* Wrappers.cpp in Sources */,

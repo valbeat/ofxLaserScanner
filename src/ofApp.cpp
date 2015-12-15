@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
     ofBackground(0, 0, 0);
     #ifdef _USE_LIVE_VIDEO
     setupCamera();
@@ -31,7 +30,7 @@ void ofApp::setup(){
     preview.end();
     
     
-//    vbo.setVertexData(pos3Ds,NUM_VERTEX, GL_DYNAMIC_DRAW);
+//    vbo.setVertexData(pts,NUM_VERTEX, GL_DYNAMIC_DRAW);
     
     pointCloud.clearVertices();
     pointCloud.setMode(OF_PRIMITIVE_POINTS);
@@ -72,14 +71,15 @@ void ofApp::update(){
         calc();
         
         createPointCloud();
-        
-        
+
+
         preview.begin();
         ofClear(0);
         cam3d.begin();
         pointCloud.draw();
         cam3d.end();
         preview.end();
+
         
         laserPos.clear();
 
@@ -97,13 +97,13 @@ void ofApp::draw(){
     laserScan.draw(0,0,camWidth,camHeight);
     ofDisableBlendMode();
     
-    glEnable(GL_POINT_SMOOTH);
-    glPointSize(3);
+//    glEnable(GL_POINT_SMOOTH);
+//    glPointSize(3);
     ofEnableDepthTest();
     ofSetColor(255);
     preview.draw(camWidth,0,camWidth,camHeight);
     ofDisableDepthTest();
-    glDisable(GL_POINT_SMOOTH);
+//    glDisable(GL_POINT_SMOOTH);
     
     ofSetColor(255, 0, 0);
     ofRect(camWidth / 2 - x0, 0, 1, camHeight);
@@ -221,8 +221,9 @@ void ofApp::setupGui() {
 //--------------------------------------------------------------
 void ofApp::updateRotate() {
     int r = rotate;
-    if (r > 360) return;
+    if (r >= 360) return;
     r+= rotateInterval;
+    if (r > 359) r = 359;
     rotate.operator=(r);
 }
 //--------------------------------------------------------------
@@ -235,7 +236,7 @@ void ofApp::startScanButtonPressed() {
 }
 //--------------------------------------------------------------
 void ofApp::resetPointsButtonPressed() {
-    pointCloud.clear();
+    pts.clear();
     isStart = false;
     rotate.operator=(0);
 }
@@ -277,13 +278,27 @@ void ofApp::readLaserPixels(ofPixels pixels) {
 //--------------------------------------------------------------
 // ポイントクラウド生成
 void ofApp::createPointCloud() {
-    if (!pos3Ds.empty()) {
-        for (int i = 0; i < pos3Ds.size(); i++) {
-            ofPoint pos = pos3Ds[i];
-            pointCloud.addVertex(pos);
-        }
+    if (pts.empty()) {
+        return;
     }
-    pos3Ds.clear();
+    pointCloud.clear();
+    for (int i = 0; i < pts.size(); i++) {
+        ofPoint pos = pts[i];
+        pointCloud.addVertex(pos);
+    }
+}
+//--------------------------------------------------------------
+void ofApp::createDelaunay() {
+    if (pts.size() < 15) {
+        return;
+    }
+    delaunay.reset();
+    
+//    for (int i = 0; i < pts.size(); i+= 5) {
+//        delaunay.addPoint(pts[i]);
+//    }
+    delaunay.addPoints(pts);
+    delaunay.triangulate();
 }
 //--------------------------------------------------------------
 // 計算部分
@@ -306,7 +321,7 @@ void ofApp::calc() {
         p.y = (-pos.y + camHeight / 2) / RESOLUSION_HEIGHT * 25.4;
         p.z = - Lz * cos(rad) * (1 - Nx * d / (Nx * d + Lw * diff));
         p.x = Lz * sin(rad) * (1 - Nx * d / (Nx * d + Lw * diff));
-        pos3Ds.push_back(p);
+        pts.push_back(p);
     }
 }
 //--------------------------------------------------------------
