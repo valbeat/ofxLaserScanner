@@ -13,7 +13,6 @@ void ofApp::setup(){
     setupCam3d();
     
     
-    
     image.allocate(camWidth, camHeight, GL_RGB);
     image.begin();
     ofClear(0,255);
@@ -178,7 +177,7 @@ void ofApp::setupCamera() {
     ofSetLogLevel(OF_LOG_VERBOSE);
     camera.setVerbose(true);
     camera.listDevices();
-    camera.setDeviceID(0);
+    camera.setDeviceID(1);
     camera.initGrabber(camWidth,camHeight);
 }
 //--------------------------------------------------------------
@@ -221,7 +220,10 @@ void ofApp::setupGui() {
 //--------------------------------------------------------------
 void ofApp::updateRotate() {
     int r = rotate;
-    if (r >= 360) return;
+    if (r >= 360) {
+        isStart = false;
+        return;
+    }
     r+= rotateInterval;
     if (r > 359) r = 359;
     rotate.operator=(r);
@@ -355,5 +357,15 @@ float ofApp::median(vector<int> v) {
     } else {
         return (_v[(size / 2) - 1] + _v[size / 2]) / 2;
     }
+}
+//--------------------------------------------------------------
+string ofApp::vecToString(vector<ofPoint> v) {
+    std::stringstream ss;
+    for (size_t i = 0; i < v.size(); ++i){
+        ss << v[i].x << ',' << v[i].y << ',' << v[i].z;
+        ss << '\n';
+    }
+    std::string s = ss.str();
+    return s;
 }
 //--------------------------------------------------------------

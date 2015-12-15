@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0FB02D5F1C1F9DCE0007CB80 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */; };
 		0FB02D601C1F9DCE0007CB80 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */; };
+		0FB02D651C1FB1B10007CB80 /* ofxCsv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D631C1FB1B10007CB80 /* ofxCsv.cpp */; };
 		0FD558121BE063D700E8B87F /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FD558011BE063D700E8B87F /* ofxBaseGui.cpp */; };
 		0FD558131BE063D700E8B87F /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FD558031BE063D700E8B87F /* ofxButton.cpp */; };
 		0FD558141BE063D700E8B87F /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FD558061BE063D700E8B87F /* ofxGuiGroup.cpp */; };
@@ -101,6 +102,8 @@
 		0FB02D591C1F9DCE0007CB80 /* ofxDelaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
 		0FB02D5E1C1F9DCE0007CB80 /* Delaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Delaunay.h; sourceTree = "<group>"; };
+		0FB02D631C1FB1B10007CB80 /* ofxCsv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCsv.cpp; sourceTree = "<group>"; };
+		0FB02D641C1FB1B10007CB80 /* ofxCsv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCsv.h; sourceTree = "<group>"; };
 		0FD558011BE063D700E8B87F /* ofxBaseGui.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxBaseGui.cpp; sourceTree = "<group>"; };
 		0FD558021BE063D700E8B87F /* ofxBaseGui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBaseGui.h; sourceTree = "<group>"; };
 		0FD558031BE063D700E8B87F /* ofxButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxButton.cpp; sourceTree = "<group>"; };
@@ -371,6 +374,24 @@
 				0FB02D5E1C1F9DCE0007CB80 /* Delaunay.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		0FB02D611C1FB1B10007CB80 /* ofxCsv */ = {
+			isa = PBXGroup;
+			children = (
+				0FB02D621C1FB1B10007CB80 /* src */,
+			);
+			name = ofxCsv;
+			sourceTree = "<group>";
+		};
+		0FB02D621C1FB1B10007CB80 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				0FB02D631C1FB1B10007CB80 /* ofxCsv.cpp */,
+				0FB02D641C1FB1B10007CB80 /* ofxCsv.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxCsv/src;
 			sourceTree = "<group>";
 		};
 		0FD557FF1BE063D700E8B87F /* ofxGui */ = {
@@ -661,6 +682,7 @@
 				6025FAF6414C2CA589764D26 /* ofxCv */,
 				0FD557FF1BE063D700E8B87F /* ofxGui */,
 				0FB02D561C1F9DCE0007CB80 /* ofxDelaunay */,
+				0FB02D611C1FB1B10007CB80 /* ofxCsv */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -945,6 +967,7 @@
 				10B69DE456AED1288FC9316B /* Tracker.cpp in Sources */,
 				0FD558171BE063D700E8B87F /* ofxSlider.cpp in Sources */,
 				0FB02D5F1C1F9DCE0007CB80 /* ofxDelaunay.cpp in Sources */,
+				0FB02D651C1FB1B10007CB80 /* ofxCsv.cpp in Sources */,
 				0FD558121BE063D700E8B87F /* ofxBaseGui.cpp in Sources */,
 				A6668C5B1272D7FCD5B5A16F /* Utilities.cpp in Sources */,
 				DBCB84A37F9AECC254870D79 /* Wrappers.cpp in Sources */,

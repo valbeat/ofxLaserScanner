@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxDelaunay.h"
+#include "ofxCsv.h"
 
 //#define _USE_LIVE_VIDEO
 #define VIDEO_NAME "test.mov"
@@ -32,7 +33,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-
+    
     //ライブカメラを使用する際には、カメラ入力を準備
     ofVideoGrabber camera;
     void setupCamera();
@@ -104,4 +105,7 @@ class ofApp : public ofBaseApp{
     // 頂点数が多すぎて使えない?
     void createDelaunay();
     
+    wng::ofxCsv csv;
+    
+    string vecToString(vector<ofPoint>);
 };
