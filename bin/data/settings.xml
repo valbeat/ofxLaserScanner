@@ -1,7 +1,8 @@
 <group>
-	<laserBright>220</laserBright>
+	<laserBright>250</laserBright>
 	<d_mm_>60</d_mm_>
-	<L_mm_>260</L_mm_>
+	<Lz_mm_>260</Lz_mm_>
+	<laser_Interval>10</laser_Interval>
 	<theta>0</theta>
-	<+theta>1</+theta>
+	<rotateInterval>1</rotateInterval>
 </group>

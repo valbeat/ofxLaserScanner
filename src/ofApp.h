@@ -68,6 +68,8 @@ class ofApp : public ofBaseApp{
     void resetPointsButtonPressed();
     ofxButton startScanButton;
     void startScanButtonPressed();
+    ofxButton saveButton;
+    void saveButtonPressed();
     
     void updateRotate();
     
@@ -83,6 +85,7 @@ class ofApp : public ofBaseApp{
     void createPointCloud();
     void setupGui();
     void setupCam3d();
+    void saveCSV(vector<ofPoint>);
     
     // スクリーン上でレーザーが当たっている位置
     vector<ofPoint> laserPos;
@@ -105,7 +108,7 @@ class ofApp : public ofBaseApp{
     // 頂点数が多すぎて使えない?
     void createDelaunay();
     
-    wng::ofxCsv csv;
+    ofFile csvFile;
     
     string vecToString(vector<ofPoint>);
 };

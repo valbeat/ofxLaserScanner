@@ -49,9 +49,6 @@ void ofApp::update(){
     isNewFrame = video.isFrameNew();
     #endif
     if (isNewFrame) {
-        if (isStart) {
-            updateRotate();
-        }
         #ifdef _USE_LIVE_VIDEO
         image.begin();
         camera.draw(0,0, camWidth, camHeight);
@@ -61,16 +58,18 @@ void ofApp::update(){
         video.draw(0, 0, camWidth, camHeight);
         image.end();
         #endif
-
+        
+        if (isStart) {
+            updateRotate();
+        }
+        
         ofPixels pixels;
         image.readToPixels(pixels);
         readLaserPixels(pixels);
         
-        
         calc();
         
         createPointCloud();
-
 
         preview.begin();
         ofClear(0);
@@ -78,7 +77,6 @@ void ofApp::update(){
         pointCloud.draw();
         cam3d.end();
         preview.end();
-
         
         laserPos.clear();
 
@@ -202,6 +200,7 @@ void ofApp::setupGui() {
     updateRotateButton.addListener(this, &ofApp::updateRotateButtonPressed);
     resetPointsButton.addListener(this, &ofApp::resetPointsButtonPressed);
     startScanButton.addListener(this, &ofApp::startScanButtonPressed);
+    saveButton.addListener(this, &ofApp::saveButtonPressed);
     
     guiFlag = true;
     gui.setup();
@@ -214,6 +213,7 @@ void ofApp::setupGui() {
     gui.add(updateRotateButton.setup("theta += rotateInterval"));
     gui.add(startScanButton.setup("start"));
     gui.add(resetPointsButton.setup("reset"));
+    gui.add(saveButton.setup("save"));
     gui.loadFromFile("settings.xml");
     
 }
@@ -224,9 +224,9 @@ void ofApp::updateRotate() {
         isStart = false;
         return;
     }
-    r+= rotateInterval;
+    r += rotateInterval;
     if (r > 359) r = 359;
-    rotate.operator=(r);
+    rotate = r;
 }
 //--------------------------------------------------------------
 void ofApp::updateRotateButtonPressed() {
@@ -240,7 +240,12 @@ void ofApp::startScanButtonPressed() {
 void ofApp::resetPointsButtonPressed() {
     pts.clear();
     isStart = false;
-    rotate.operator=(0);
+    rotate = 0;
+}
+
+//--------------------------------------------------------------
+void ofApp::saveButtonPressed() {
+    saveCSV(pts);
 }
 //--------------------------------------------------------------
 void ofApp::readLaserPixels(ofPixels pixels) {
@@ -367,5 +372,11 @@ string ofApp::vecToString(vector<ofPoint> v) {
     }
     std::string s = ss.str();
     return s;
+}
+//--------------------------------------------------------------
+void ofApp::saveCSV(vector<ofPoint> v) {
+    string s = vecToString(v);
+    ofBuffer buffer = s;
+    ofBufferToFile("data.csv", buffer);
 }
 //--------------------------------------------------------------
