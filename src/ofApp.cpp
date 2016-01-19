@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0, 0, 0);
-    #ifdef _USE_LIVE_VIDEO
+    #ifdef USE_LIVE_VIDEO
     setupCamera();
     #else
     setupVideo();
@@ -37,11 +37,13 @@ void ofApp::setup(){
     // マウスカーソル非表示バグ回避
     ofHideCursor();
     
+    serial.setup(SERIAL_PORT,9600);
+    
 }
 //--------------------------------------------------------------
 void ofApp::update(){
     bool isNewFrame = false;
-    #ifdef _USE_LIVE_VIDEO
+    #ifdef USE_LIVE_VIDEO
     camera.update();
     isNewFrame = camera.isFrameNew();
     #else
@@ -49,7 +51,7 @@ void ofApp::update(){
     isNewFrame = video.isFrameNew();
     #endif
     if (isNewFrame) {
-        #ifdef _USE_LIVE_VIDEO
+        #ifdef USE_LIVE_VIDEO
         image.begin();
         camera.draw(0,0, camWidth, camHeight);
         image.end();

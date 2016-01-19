@@ -5,8 +5,12 @@
 #include "ofxDelaunay.h"
 #include "ofxCsv.h"
 
-//#define _USE_LIVE_VIDEO
+
+#undef USE_LIVE_CAMERA
 #define VIDEO_NAME "test.mov"
+
+// シリアルポート
+#define SERIAL_PORT "/dev/tty.usbmodem1411"
 
 // oFの解像度 [dpi]
 #define RESOLUSION_WIDTH 72
@@ -109,6 +113,8 @@ class ofApp : public ofBaseApp{
     void createDelaunay();
     
     ofFile csvFile;
+    
+    ofSerial serial;
     
     string vecToString(vector<ofPoint>);
 };
