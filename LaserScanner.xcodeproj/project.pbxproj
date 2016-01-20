@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F4B711F1C4F0A9D004BD60C /* meshCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F4B711D1C4F0A9D004BD60C /* meshCreator.cpp */; };
+		0F4B71221C4F2478004BD60C /* laserScanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F4B71201C4F2478004BD60C /* laserScanner.cpp */; };
 		0FB02D5F1C1F9DCE0007CB80 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */; };
 		0FB02D601C1F9DCE0007CB80 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */; };
 		0FB02D651C1FB1B10007CB80 /* ofxCsv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D631C1FB1B10007CB80 /* ofxCsv.cpp */; };
@@ -98,6 +100,9 @@
 		087522EA37A32B8D902CAB64 /* core_c.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = core_c.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/core_c.h; sourceTree = SOURCE_ROOT; };
 		096CB33CAD6C5A446E7026E9 /* dynamic_bitset.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = dynamic_bitset.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/dynamic_bitset.h; sourceTree = SOURCE_ROOT; };
 		0CF0AA3895D28E97D8A1E4A9 /* ground_truth.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ground_truth.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/ground_truth.h; sourceTree = SOURCE_ROOT; };
+		0F4B711D1C4F0A9D004BD60C /* meshCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = meshCreator.cpp; sourceTree = "<group>"; };
+		0F4B71201C4F2478004BD60C /* laserScanner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = laserScanner.cpp; sourceTree = "<group>"; };
+		0F4B71211C4F2478004BD60C /* laserScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = laserScanner.h; sourceTree = "<group>"; };
 		0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
 		0FB02D591C1F9DCE0007CB80 /* ofxDelaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
@@ -121,6 +126,7 @@
 		0FD5580F1BE063D700E8B87F /* ofxSliderGroup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxSliderGroup.h; sourceTree = "<group>"; };
 		0FD558101BE063D700E8B87F /* ofxToggle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxToggle.cpp; sourceTree = "<group>"; };
 		0FD558111BE063D700E8B87F /* ofxToggle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxToggle.h; sourceTree = "<group>"; };
+		0FD8C0CA1C4DC7B1006439A9 /* meshCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = meshCreator.h; sourceTree = "<group>"; };
 		114B872696817CC33990FC83 /* imgproc.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = imgproc.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc/imgproc.hpp; sourceTree = SOURCE_ROOT; };
 		178547E33CE398C7B59F08AB /* ContourFinder.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ContourFinder.h; path = ../../../addons/ofxCv/libs/ofxCv/include/ofxCv/ContourFinder.h; sourceTree = SOURCE_ROOT; };
 		1E95EFD35ED9C5D97F2F015E /* timer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = timer.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/timer.h; sourceTree = SOURCE_ROOT; };
@@ -820,6 +826,10 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
+				0FD8C0CA1C4DC7B1006439A9 /* meshCreator.h */,
+				0F4B711D1C4F0A9D004BD60C /* meshCreator.cpp */,
+				0F4B71201C4F2478004BD60C /* laserScanner.cpp */,
+				0F4B71211C4F2478004BD60C /* laserScanner.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -954,6 +964,7 @@
 				F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */,
 				EBCDE831EFAE08274E799C97 /* Calibration.cpp in Sources */,
 				6AABAB39E82AF5CFEA23A205 /* ContourFinder.cpp in Sources */,
+				0F4B71221C4F2478004BD60C /* laserScanner.cpp in Sources */,
 				0FD558181BE063D700E8B87F /* ofxSliderGroup.cpp in Sources */,
 				0FD558151BE063D700E8B87F /* ofxLabel.cpp in Sources */,
 				0FB02D601C1F9DCE0007CB80 /* Delaunay.cpp in Sources */,
@@ -973,6 +984,7 @@
 				DBCB84A37F9AECC254870D79 /* Wrappers.cpp in Sources */,
 				0FD558141BE063D700E8B87F /* ofxGuiGroup.cpp in Sources */,
 				0FD558161BE063D700E8B87F /* ofxPanel.cpp in Sources */,
+				0F4B711F1C4F0A9D004BD60C /* meshCreator.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

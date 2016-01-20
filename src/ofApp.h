@@ -2,7 +2,6 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "ofxDelaunay.h"
 #include "ofxCsv.h"
 
 
@@ -107,14 +106,9 @@ class ofApp : public ofBaseApp{
     
     int x0;
     
-    ofxDelaunay delaunay;
-    // ドロネー分割でメッシュを生成する
-    // 頂点数が多すぎて使えない?
-    void createDelaunay();
-    
     ofFile csvFile;
     
     ofSerial serial;
     
-    string vecToString(vector<ofPoint>);
+    string vecToCSV(vector<ofPoint>);
 };

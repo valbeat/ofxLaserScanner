@@ -297,19 +297,6 @@ void ofApp::createPointCloud() {
     }
 }
 //--------------------------------------------------------------
-void ofApp::createDelaunay() {
-    if (pts.size() < 15) {
-        return;
-    }
-    delaunay.reset();
-    
-//    for (int i = 0; i < pts.size(); i+= 5) {
-//        delaunay.addPoint(pts[i]);
-//    }
-    delaunay.addPoints(pts);
-    delaunay.triangulate();
-}
-//--------------------------------------------------------------
 // 計算部分
 void ofApp::calc() {
 
@@ -366,7 +353,8 @@ float ofApp::median(vector<int> v) {
     }
 }
 //--------------------------------------------------------------
-string ofApp::vecToString(vector<ofPoint> v) {
+// カンマ区切りの文字列を生成
+string ofApp::vecToCSV(vector<ofPoint> v) {
     std::stringstream ss;
     for (size_t i = 0; i < v.size(); ++i){
         ss << v[i].x << ',' << v[i].y << ',' << v[i].z;
@@ -377,7 +365,7 @@ string ofApp::vecToString(vector<ofPoint> v) {
 }
 //--------------------------------------------------------------
 void ofApp::saveCSV(vector<ofPoint> v) {
-    string s = vecToString(v);
+    string s = vecToCSV(v);
     ofBuffer buffer = s;
     ofBufferToFile("data.csv", buffer);
 }
