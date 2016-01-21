@@ -4,6 +4,8 @@
 #include "ofxGui.h"
 #include "ofxCsv.h"
 
+#
+
 
 #undef USE_LIVE_CAMERA
 #define VIDEO_NAME "test.mov"
@@ -11,14 +13,7 @@
 // シリアルポート
 #define SERIAL_PORT "/dev/tty.usbmodem1411"
 
-// oFの解像度 [dpi]
-#define RESOLUSION_WIDTH 72
-#define RESOLUSION_HEIGHT 72
-
-#define LASER_PIXELS 480 // ラインレーザーの最大値
-#define MAX_ROTATE 360 // 回転の最大値
-#define NUM_VERTEX LASER_PIXELS * MAX_ROTATE // 最大頂点
-
+// エントリーポイント
 class ofApp : public ofBaseApp{
 
 	public:
@@ -35,22 +30,6 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
-    
-    //ライブカメラを使用する際には、カメラ入力を準備
-    ofVideoGrabber camera;
-    void setupCamera();
-    //あらかじめ録画した映像を使用する際には、ビデオプレイヤーを準備
-    ofVideoPlayer video;
-    void setupVideo();
-    
-    int camWidth;
-    int camHeight;
-    
-    // ビデオまたはカメラからキャプチャした画像
-    ofFbo image;
-    // レーザー光があたっている場所
-    ofFbo laserScan;
     
     // 3Dモデルプレビュー
     ofFbo preview;
@@ -76,22 +55,16 @@ class ofApp : public ofBaseApp{
     
     void updateRotate();
     
-    bool isStart;
-    
     ofEasyCam cam3d;
     
     bool debugFlag;
     bool guiFlag;
 
-    void calc();
-    void readLaserPixels(ofPixels pixels);
     void createPointCloud();
     void setupGui();
     void setupCam3d();
     void saveCSV(vector<ofPoint>);
     
-    // スクリーン上でレーザーが当たっている位置
-    vector<ofPoint> laserPos;
     // vbo
     ofVbo vbo;
     // レーザーの座標を蓄えておく
@@ -104,8 +77,7 @@ class ofApp : public ofBaseApp{
     float mean(vector<int>);
     float median(vector<int>);
     
-    int x0;
-    
+
     ofFile csvFile;
     
     ofSerial serial;

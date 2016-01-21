@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0, 0, 0);
+    
     #ifdef USE_LIVE_VIDEO
     setupCamera();
     #else
@@ -11,7 +12,6 @@ void ofApp::setup(){
     
     setupGui();
     setupCam3d();
-    
     
     image.allocate(camWidth, camHeight, GL_RGB);
     image.begin();
@@ -169,24 +169,6 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
-//--------------------------------------------------------------
-void ofApp::setupCamera() {
-    camWidth = 640;
-    camHeight = 480;
-    camera.setDesiredFrameRate(30);
-    ofSetLogLevel(OF_LOG_VERBOSE);
-    camera.setVerbose(true);
-    camera.listDevices();
-    camera.setDeviceID(1);
-    camera.initGrabber(camWidth,camHeight);
-}
-//--------------------------------------------------------------
-void ofApp::setupVideo() {
-    camWidth = 640;
-    camHeight = 480;
-    video.loadMovie(VIDEO_NAME);
-    video.play();
-}
 
 void ofApp::setupCam3d() {
     cam3d.setNearClip(1e-4);
@@ -296,76 +278,11 @@ void ofApp::createPointCloud() {
         pointCloud.addVertex(pos);
     }
 }
-//--------------------------------------------------------------
-// 計算部分
-void ofApp::calc() {
 
-    int Nx = camWidth; // スクリーン幅[pixel]
-    int Ny = camHeight;
-    float Lw; // スクリーンの大きさ[mm]
-    int lookPoint = (int)(camWidth / 2); // 注視点（カメラの中心）
-    
-    // レーザーの基準値 dの[mm]→[pixel]変換
-    x0 = (int)(d * RESOLUSION_WIDTH / 25.4); // [pixel]
-    Lw = Nx / RESOLUSION_WIDTH * 25.4; // [mm]
-    for (int i = 0; i < laserPos.size(); i++) {
-        ofPoint pos = laserPos[i];
-        float diff = abs(pos.x - lookPoint) - x0;
-        if(diff < 0) diff = 0;
-        ofPoint p;
-        float rad = rotate * DEG_TO_RAD;
-        p.y = (-pos.y + camHeight / 2) / RESOLUSION_HEIGHT * 25.4;
-        p.z = - Lz * cos(rad) * (1 - Nx * d / (Nx * d + Lw * diff));
-        p.x = Lz * sin(rad) * (1 - Nx * d / (Nx * d + Lw * diff));
-        pts.push_back(p);
-    }
-}
 //--------------------------------------------------------------
-// 配列の平均値を返す
-float ofApp::mean(vector<int> v) {
-    int size = v.size();
-    int sum = 0;
-    for (int i = 0; i < size; i++){
-        sum += v[i];
-    }
-    return sum / size;
-}
-//--------------------------------------------------------------
-// 配列の中央値を返す
-float ofApp::median(vector<int> v) {
-    int size = v.size();
-    vector<int> _v;
-    copy(v.begin(), v.end(), back_inserter(_v));
-    int tmp;
-    for (int i = 0; i < size - 1; i++){
-        for (int j = i + 1; j < size; j++) {
-            if (_v[i] > _v[j]){
-                tmp = _v[i];
-                _v[i] = _v[j];
-                _v[j] = tmp;
-            }
-        }
-    }
-    if (size % 2 == 1) {
-        return _v[(size - 1) / 2];
-    } else {
-        return (_v[(size / 2) - 1] + _v[size / 2]) / 2;
-    }
-}
-//--------------------------------------------------------------
-// カンマ区切りの文字列を生成
-string ofApp::vecToCSV(vector<ofPoint> v) {
-    std::stringstream ss;
-    for (size_t i = 0; i < v.size(); ++i){
-        ss << v[i].x << ',' << v[i].y << ',' << v[i].z;
-        ss << '\n';
-    }
-    std::string s = ss.str();
-    return s;
-}
-//--------------------------------------------------------------
+// CSVに保存する
 void ofApp::saveCSV(vector<ofPoint> v) {
-    string s = vecToCSV(v);
+    string s = Utility::vecToCSV(v);
     ofBuffer buffer = s;
     ofBufferToFile("data.csv", buffer);
 }
