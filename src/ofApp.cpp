@@ -5,9 +5,9 @@ void ofApp::setup(){
     ofBackground(0, 0, 0);
     
     #ifdef USE_LIVE_VIDEO
-    setupCamera();
+        setupCamera();
     #else
-    setupVideo();
+        setupVideo();
     #endif
     
     setupGui();

@@ -4,7 +4,10 @@
 #include "ofxGui.h"
 #include "ofxCsv.h"
 
-#
+#include "Utility.h"
+#include "laserScanner.h"
+#include "utility.h"
+
 
 
 #undef USE_LIVE_CAMERA
