@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0F3527501C50A67B008A29FE /* utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F35274F1C50A67B008A29FE /* utility.cpp */; };
+		0F3943121C535CA900B7E94D /* videoSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F3943111C535CA900B7E94D /* videoSource.cpp */; };
 		0F4B711F1C4F0A9D004BD60C /* meshCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F4B711D1C4F0A9D004BD60C /* meshCreator.cpp */; };
 		0F4B71221C4F2478004BD60C /* laserScanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F4B71201C4F2478004BD60C /* laserScanner.cpp */; };
 		0FB02D5F1C1F9DCE0007CB80 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */; };
@@ -103,6 +104,8 @@
 		0CF0AA3895D28E97D8A1E4A9 /* ground_truth.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ground_truth.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/ground_truth.h; sourceTree = SOURCE_ROOT; };
 		0F35274F1C50A67B008A29FE /* utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utility.cpp; sourceTree = "<group>"; };
 		0F3527511C50A697008A29FE /* utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		0F3943101C535C8B00B7E94D /* videoSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = videoSource.h; sourceTree = "<group>"; };
+		0F3943111C535CA900B7E94D /* videoSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = videoSource.cpp; sourceTree = "<group>"; };
 		0F4B711D1C4F0A9D004BD60C /* meshCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = meshCreator.cpp; sourceTree = "<group>"; };
 		0F4B71201C4F2478004BD60C /* laserScanner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = laserScanner.cpp; sourceTree = "<group>"; };
 		0F4B71211C4F2478004BD60C /* laserScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = laserScanner.h; sourceTree = "<group>"; };
@@ -835,6 +838,8 @@
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
 				0F35274F1C50A67B008A29FE /* utility.cpp */,
 				0F3527511C50A697008A29FE /* utility.h */,
+				0F3943101C535C8B00B7E94D /* videoSource.h */,
+				0F3943111C535CA900B7E94D /* videoSource.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -988,6 +993,7 @@
 				0FD558121BE063D700E8B87F /* ofxBaseGui.cpp in Sources */,
 				A6668C5B1272D7FCD5B5A16F /* Utilities.cpp in Sources */,
 				DBCB84A37F9AECC254870D79 /* Wrappers.cpp in Sources */,
+				0F3943121C535CA900B7E94D /* videoSource.cpp in Sources */,
 				0FD558141BE063D700E8B87F /* ofxGuiGroup.cpp in Sources */,
 				0FD558161BE063D700E8B87F /* ofxPanel.cpp in Sources */,
 				0F4B711F1C4F0A9D004BD60C /* meshCreator.cpp in Sources */,

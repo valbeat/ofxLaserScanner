@@ -9,6 +9,7 @@
 #ifndef laserScanner_h
 #define laserScanner_h
 #include "ofMain.h"
+#include "utility.h"
 
 // oFの解像度 [dpi]
 #define RESOLUSION_WIDTH 72
@@ -20,23 +21,17 @@
 
 class LaserScanner {
 public:
-    //ライブカメラを使用する際には、カメラ入力を準備
-    ofVideoGrabber camera;
-    void setupCamera();
-    //あらかじめ録画した映像を使用する際には、ビデオプレイヤーを準備
-    ofVideoPlayer video;
-    void setupVideo(string videoName);
+
+    bool useVideo = false;
     
-    int camWidth;
-    int camHeight;
+    int width; // 幅
+    int height; // 高さ
     
-    // ビデオまたはカメラからキャプチャした画像
+    // キャプチャした画像
     ofFbo image;
     // レーザー光があたっている場所
     ofFbo laserScan;
-    
-    void calc();
-    void readLaserPixels(ofPixels pixels);
+
     
     int laserBright; // レーザーの明るさ閾値
     int d; // カメラとレーザーの距離[mm]
@@ -47,11 +42,34 @@ public:
     
     // スクリーン上でレーザーが当たっている位置
     vector<ofVec3f> laserPos;
+    // レーザーの座標を蓄えておく
+    vector<ofPoint> pts;
+    // 現在のフレームの座標
+    vector<ofPoint> pts_temp;
+    
+    // 3Dモデルのポイントクラウド
+    ofMesh pointCloud;
     
     bool isStart;
+
+    void setup(int w, int h);
+    void setupPointCloud();
+    void start();
+    void update();
+    void updateRotate();
+    void setImage(ofFbo source);
+    ofFbo getImage();
+    void calc();
+    void readLaserPixels(ofPixels pixels);
+    void createPointCloud();
+    void setRotate(int angle);
+    
+    int getCenter();
+
+    int x0;
     
 private:
-    int x0;
+
     
     
 };

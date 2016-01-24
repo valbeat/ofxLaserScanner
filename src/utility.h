@@ -12,10 +12,15 @@
 
 // 共通クラス
 class Utility {
+
 public:
-    float mean(vector<int> v);
-    float median(vector<int> v);
-    string vecToCSV(vector<ofPoint> v);
+    static float mean(vector<int> v);
+    static float median(vector<int> v);
+    static string vecToCSV(vector<ofPoint> v);
+    
+private:
+    Utility();
+    
 };
 
 #endif /* Utility_h */

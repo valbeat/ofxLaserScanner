@@ -5,107 +5,81 @@ void ofApp::setup(){
     ofBackground(0, 0, 0);
     
     #ifdef USE_LIVE_VIDEO
-        setupCamera();
+    videoSource.setupCamera(1, CAMERA_WIDTH, CAMERA_HEIGHT);
     #else
-        setupVideo();
+    videoSource.setupVideo(VIDEO_NAME, CAMERA_WIDTH, CAMERA_HEIGHT);
     #endif
+    
+    laserScanner.setup(CAMERA_WIDTH, CAMERA_HEIGHT);
     
     setupGui();
     setupCam3d();
-    
-    image.allocate(camWidth, camHeight, GL_RGB);
-    image.begin();
-    ofClear(0,255);
-    image.end();
-    
-    laserScan.allocate(camWidth, camHeight, GL_RGB);
-    laserScan.begin();
-    ofClear(0,255);
-    laserScan.end();
-    
-    preview.allocate(camWidth, camHeight, GL_RGB);
+
+    preview.allocate(laserScanner.width, laserScanner.height, GL_RGB);
     preview.begin();
     ofClear(0,255);
     preview.end();
     
     
+
+    
 //    vbo.setVertexData(pts,NUM_VERTEX, GL_DYNAMIC_DRAW);
     
-    pointCloud.clearVertices();
-    pointCloud.setMode(OF_PRIMITIVE_POINTS);
+
     
     // マウスカーソル非表示バグ回避
     ofHideCursor();
     
-    serial.setup(SERIAL_PORT,9600);
+//    serial.setup(SERIAL_PORT,9600);
     
 }
 //--------------------------------------------------------------
 void ofApp::update(){
-    bool isNewFrame = false;
-    #ifdef USE_LIVE_VIDEO
-    camera.update();
-    isNewFrame = camera.isFrameNew();
-    #else
-    video.update();
-    isNewFrame = video.isFrameNew();
-    #endif
-    if (isNewFrame) {
-        #ifdef USE_LIVE_VIDEO
-        image.begin();
-        camera.draw(0,0, camWidth, camHeight);
-        image.end();
-        #else
-        image.begin();
-        video.draw(0, 0, camWidth, camHeight);
-        image.end();
-        #endif
-        
-        if (isStart) {
-            updateRotate();
-        }
-        
-        ofPixels pixels;
-        image.readToPixels(pixels);
-        readLaserPixels(pixels);
-        
-        calc();
-        
-        createPointCloud();
+    // 画像のアップデートができていない場合は更新しない
+    if (!videoSource.update()) return;
+    // レーザースキャナに画像読み込ませる
+    ofFbo source = videoSource.getImage();
+    laserScanner.setImage(source);
+    // レーザースキャナの更新
+//    laserScanner.update();
 
-        preview.begin();
-        ofClear(0);
-        cam3d.begin();
-        pointCloud.draw();
-        cam3d.end();
-        preview.end();
-        
-        laserPos.clear();
-
-    }
+//    // 点群データの作成
+//    laserScanner.createPointCloud();
+//    
+//    // プレビュー画面の作成
+//    preview.begin();
+//    ofClear(0);
+//    cam3d.begin();
+//    laserScanner.pointCloud.draw();
+//    cam3d.end();
+//    preview.end();
+//
+//    // クリア
+//    laserScanner.laserPos.clear();
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
     ofSetColor(255);
-    image.draw(0, 0, camWidth, camHeight);
+    videoSource.getImage().draw(0,0,CAMERA_WIDTH,CAMERA_HEIGHT);
 
     ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     ofSetColor(255,100);
-    laserScan.draw(0,0,camWidth,camHeight);
+    laserScanner.getImage().draw(0,0,CAMERA_WIDTH,CAMERA_HEIGHT);
     ofDisableBlendMode();
     
 //    glEnable(GL_POINT_SMOOTH);
 //    glPointSize(3);
     ofEnableDepthTest();
     ofSetColor(255);
-    preview.draw(camWidth,0,camWidth,camHeight);
+    preview.draw(CAMERA_WIDTH,0,CAMERA_WIDTH,CAMERA_HEIGHT);
     ofDisableDepthTest();
 //    glDisable(GL_POINT_SMOOTH);
     
     ofSetColor(255, 0, 0);
-    ofRect(camWidth / 2 - x0, 0, 1, camHeight);
+    ofRect(CAMERA_WIDTH / 2 - laserScanner.x0 , 0, 1, CAMERA_HEIGHT);
     ofSetColor(255);
     
     
@@ -189,6 +163,7 @@ void ofApp::setupGui() {
     guiFlag = true;
     gui.setup();
     gui.add(laserBright.setup("laserBright",250,0,255));
+    laserBright.addListener(this, &ofApp::setLaserBright);
     gui.add(d.setup("d(mm)", 60, 0, 200));
     gui.add(Lz.setup("Lz(mm)", 260, 0, 1000));
     gui.add(laserPointInterval.setup("laser Interval", 5,1,10));
@@ -201,89 +176,33 @@ void ofApp::setupGui() {
     gui.loadFromFile("settings.xml");
     
 }
-//--------------------------------------------------------------
-void ofApp::updateRotate() {
-    int r = rotate;
-    if (r >= 360) {
-        isStart = false;
-        return;
-    }
-    r += rotateInterval;
-    if (r > 359) r = 359;
-    rotate = r;
-}
+
 //--------------------------------------------------------------
 void ofApp::updateRotateButtonPressed() {
-    updateRotate();
+    laserScanner.updateRotate();
 }
 //--------------------------------------------------------------
 void ofApp::startScanButtonPressed() {
+    bool isStart = laserScanner.isStart;
     isStart ? isStart = false : isStart = true;
+    laserScanner.isStart = isStart;
 }
 //--------------------------------------------------------------
 void ofApp::resetPointsButtonPressed() {
-    pts.clear();
-    isStart = false;
+    laserScanner.pts.clear();
+    laserScanner.isStart = false;
     rotate = 0;
 }
 
 //--------------------------------------------------------------
 void ofApp::saveButtonPressed() {
-    saveCSV(pts);
+    saveCSV(laserScanner.pts);
 }
-//--------------------------------------------------------------
-void ofApp::readLaserPixels(ofPixels pixels) {
-    laserScan.begin();
-    ofClear(0,255);
-    laserScan.end();
-    int w = pixels.getWidth();
-    int h = pixels.getHeight();
-
-    for (int y = 0; y < h; y+= laserPointInterval) {
-        vector<int> v;
-        for (int x = 0; x < w ; x++) {
-            ofColor c = pixels.getColor(x, y);
-            if(c.g > laserBright) {
-                v.push_back(x);
-            }
-        }
-        
-        if (!v.empty()) {
-            int mX = (int)median(v);
-            laserPos.push_back(ofPoint(mX,y));
-            
-            // レーザーの中心を表示させる
-            laserScan.begin();
-            // ブレンドモードをONにした時はスムージングを切る
-            ofDisableSmoothing();
-            ofEnableBlendMode(OF_BLENDMODE_ADD);
-            ofSetColor(0,255,0);
-            ofRect(mX - 1, y, 2, 2);
-            ofSetColor(255, 255, 255);
-            ofEnableAlphaBlending();
-            ofEnableSmoothing();
-            laserScan.end();
-        }
-    }
-}
-//--------------------------------------------------------------
-// ポイントクラウド生成
-void ofApp::createPointCloud() {
-    if (pts.empty()) {
-        return;
-    }
-    pointCloud.clear();
-    for (int i = 0; i < pts.size(); i++) {
-        ofPoint pos = pts[i];
-        pointCloud.addVertex(pos);
-    }
-}
-
 //--------------------------------------------------------------
 // CSVに保存する
 void ofApp::saveCSV(vector<ofPoint> v) {
     string s = Utility::vecToCSV(v);
     ofBuffer buffer = s;
-    ofBufferToFile("data.csv", buffer);
+    ofBufferToFile(CSV_NAME, buffer);
 }
 //--------------------------------------------------------------
