@@ -47,46 +47,50 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
+private:
     // 3Dモデルプレビュー
     ofFbo preview;
     
     //GUI
     ofxPanel gui;
     ofxIntSlider laserBright;
-    void setLaserBright();
-    ofxIntSlider d; // カメラとレーザーの距離[mm]
-    void setD(); // カメラとレーザーの距離を設定
-    ofxIntSlider Lz; // カメラとスクリーンの距離[mm]
-    void setLz(); // カメラとスクリーンの距離を設定
+    void onLaserBrightChanged(int &laserBright);
+    ofxIntSlider distanceCameraLaser; // カメラとレーザーの距離[mm]
+    void onDistanceCameraLaserChanged(int &distanceCameraLaser); // カメラとレーザーの距離を設定
+    ofxIntSlider distanceCameraScreen; // カメラとスクリーンの距離[mm]
+    void onDistanceCameraScreenChanged(int &disntanceCameraScreen); // カメラとスクリーンの距離を設定
     ofxIntSlider laserPointInterval; // レーザーポインタの間隔
-    void setLaserPointInerval(); // レーザーポインタの間隔を設定
+    void onLaserPointInervalChanged(int &laserPointInterval); // レーザーポインタの間隔を設定
     ofxIntSlider rotate; // 回転角
-    void setRotate(); // 回転角を設定
+    void onRotateChanged(int &rotate); // 回転角を設定
     ofxIntSlider rotateInterval; // 回転量
-    void setRotateInterval(); // 回転量を設定
+    void onRotateIntervalChanged(int &rotateInterval); // 回転量を設定
     ofxButton updateRotateButton; // 回転角を回転量分増やすボタン
-    void updateRotateButtonPressed(); // 回転角を増やすボタンの関数
-    ofxButton resetPointsButton;
-    void resetPointsButtonPressed();
-    ofxButton startScanButton;
-    void startScanButtonPressed();
-    ofxButton saveButton;
-    void saveButtonPressed();
-
+    void onUpdateRotateButtonPressed(); // 回転角を増やすボタンのリスナー
+    ofxButton resetPointsButton; // リセットボタン
+    void onResetPointsButtonPressed(); // リセットボタンのリスナー
+    ofxButton startScanButton; // スキャンスタートのボタン
+    void onStartScanButtonPressed();
+    ofxButton saveButton; // セーブボタン
+    void onSaveButtonPressed();
     
-    ofEasyCam cam3d;
     
-    bool debugFlag;
-    bool guiFlag;
+    void setLaserScannerParams(); // スキャナーのパラメーターをセットする
+    
+    
+    ofEasyCam previewCamera; // 3Dプレビューに使うためのカメラ
 
-    void createPointCloud();
-    void setupGui();
-    void setupCam3d();
-    void saveCSV(vector<ofPoint>);
+    bool debugFlag; // デバッグ中かどうか
+    bool guiFlag; // GUIを表示させるかどうか
+    
+    void createPointCloud(); // ポイントクラウドを作る
+    void setupGui(); // GUIのセットアップ
+    void setupPreviewCamera(); // プレビュー用カメラのセットアップ
+    void saveCSV(vector<ofPoint>); // CSVの保存
     
     // vbo
     ofVbo vbo;
-
+    
     ofFile csvFile;
     
     ofSerial serial;

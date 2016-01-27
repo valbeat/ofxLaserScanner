@@ -37,8 +37,8 @@ void LaserScanner::update() {
     ofPixels pixels;
     image.readToPixels(pixels);
     readLaserPixels(pixels);
-    
-    calc();
+//
+//    calc();
 }
 
 void LaserScanner::setImage(ofFbo source){
@@ -74,16 +74,23 @@ void LaserScanner::calc() {
 }
 //--------------------------------------------------------------
 void LaserScanner::readLaserPixels(ofPixels pixels) {
+    // レーザースキャン結果のリセット
     laserScan.begin();
     ofClear(0,255);
     laserScan.end();
+
+    // ピクセル数の取得
     int w = pixels.getWidth();
     int h = pixels.getHeight();
+    
     
     for (int y = 0; y < h; y+= laserPointInterval) {
         vector<int> v;
         for (int x = 0; x < w ; x++) {
+            
             ofColor c = pixels.getColor(x, y);
+            
+            // 緑成分の閾値で判定
             if(c.g > laserBright) {
                 v.push_back(x);
             }

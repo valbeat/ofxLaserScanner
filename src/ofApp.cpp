@@ -13,12 +13,14 @@ void ofApp::setup(){
     laserScanner.setup(CAMERA_WIDTH, CAMERA_HEIGHT);
     
     setupGui();
-    setupCam3d();
+    setupPreviewCamera();
 
     preview.allocate(laserScanner.width, laserScanner.height, GL_RGB);
     preview.begin();
     ofClear(0,255);
     preview.end();
+    
+    setLaserScannerParams();
     
     
 
@@ -41,7 +43,7 @@ void ofApp::update(){
     ofFbo source = videoSource.getImage();
     laserScanner.setImage(source);
     // レーザースキャナの更新
-//    laserScanner.update();
+    laserScanner.update();
 
 //    // 点群データの作成
 //    laserScanner.createPointCloud();
@@ -49,9 +51,9 @@ void ofApp::update(){
 //    // プレビュー画面の作成
 //    preview.begin();
 //    ofClear(0);
-//    cam3d.begin();
+//    previewCamera.begin();
 //    laserScanner.pointCloud.draw();
-//    cam3d.end();
+//    previewCamera.end();
 //    preview.end();
 //
 //    // クリア
@@ -144,58 +146,104 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
-void ofApp::setupCam3d() {
-    cam3d.setNearClip(1e-4);
-    cam3d.setFarClip(1000);
-    cam3d.setDistance(0);
-    cam3d.setPosition(0,0,-100);
-    cam3d.lookAt(ofVec3f(0,0,1));
+void ofApp::setupPreviewCamera() {
+    previewCamera.setNearClip(1e-4);
+    previewCamera.setFarClip(1000);
+    previewCamera.setDistance(0);
+    previewCamera.setPosition(0,0,-100);
+    previewCamera.lookAt(ofVec3f(0,0,1));
 }
 
 //--------------------------------------------------------------
 void ofApp::setupGui() {
-    //ボタンの動作設定
-    updateRotateButton.addListener(this, &ofApp::updateRotateButtonPressed);
-    resetPointsButton.addListener(this, &ofApp::resetPointsButtonPressed);
-    startScanButton.addListener(this, &ofApp::startScanButtonPressed);
-    saveButton.addListener(this, &ofApp::saveButtonPressed);
     
     guiFlag = true;
     gui.setup();
     gui.add(laserBright.setup("laserBright",250,0,255));
-    laserBright.addListener(this, &ofApp::setLaserBright);
-    gui.add(d.setup("d(mm)", 60, 0, 200));
-    gui.add(Lz.setup("Lz(mm)", 260, 0, 1000));
+//    laserBright.addListener(this, &ofApp::onLaserBrightChanged);
+    
+    gui.add(distanceCameraLaser.setup("d(mm)", 60, 0, 200));
+//    distanceCameraLaser.addListener(this, &ofApp::onDistanceCameraLaserChanged);
+    
+    gui.add(distanceCameraScreen.setup("Lz(mm)", 260, 0, 1000));
+//    distanceCameraScreen.addListener(this, &ofApp::onDistanceCameraScreenChanged);
+    
     gui.add(laserPointInterval.setup("laser Interval", 5,1,10));
+//    laserPointInterval.addListener(this, &ofApp::onLaserPointInervalChanged);
+    
     gui.add(rotate.setup("theta",0,0,360));
+//    rotate.addListener(this, &ofApp::onRotateChanged);
+    
     gui.add(rotateInterval.setup("rotateInterval",1,1,90));
+    rotateInterval.addListener(this, &ofApp::onRotateIntervalChanged);
+    
     gui.add(updateRotateButton.setup("theta += rotateInterval"));
+    updateRotateButton.addListener(this, &ofApp::onUpdateRotateButtonPressed);
+    
     gui.add(startScanButton.setup("start"));
+    startScanButton.addListener(this, &ofApp::onStartScanButtonPressed);
+    
     gui.add(resetPointsButton.setup("reset"));
+    resetPointsButton.addListener(this, &ofApp::onResetPointsButtonPressed);
+    
     gui.add(saveButton.setup("save"));
+    saveButton.addListener(this, &ofApp::onSaveButtonPressed);
+    
+    
     gui.loadFromFile("settings.xml");
     
 }
 
+void ofApp::setLaserScannerParams() {
+    laserScanner.laserBright = laserBright;
+    laserScanner.d = distanceCameraLaser;
+    laserScanner.Lz = distanceCameraScreen;
+    laserScanner.laserPointInterval = laserPointInterval;
+    laserScanner.rotate = rotate;
+    laserScanner.rotateInterval = rotateInterval;
+}
+
+void ofApp::onLaserBrightChanged(int &laserBright) {
+    laserScanner.laserBright = laserBright;
+}
 //--------------------------------------------------------------
-void ofApp::updateRotateButtonPressed() {
+void ofApp::onDistanceCameraLaserChanged(int &distanceCameraLaser) {
+    laserScanner.d = distanceCameraLaser;
+}
+//--------------------------------------------------------------
+void ofApp::onDistanceCameraScreenChanged(int &distanceCameraScreen) {
+    laserScanner.Lz = distanceCameraScreen;
+}
+//--------------------------------------------------------------
+void ofApp::onLaserPointInervalChanged(int &laserPointInterval) {
+    laserScanner.laserPointInterval = laserPointInterval;
+}
+//--------------------------------------------------------------
+void ofApp::onRotateChanged(int &rotate){
+    laserScanner.rotate = rotate;
+}
+//--------------------------------------------------------------
+void ofApp::onRotateIntervalChanged(int &rotateInterval) {
+    laserScanner.rotateInterval = rotateInterval;
+}
+//--------------------------------------------------------------
+void ofApp::onUpdateRotateButtonPressed() {
     laserScanner.updateRotate();
 }
 //--------------------------------------------------------------
-void ofApp::startScanButtonPressed() {
+void ofApp::onStartScanButtonPressed() {
     bool isStart = laserScanner.isStart;
     isStart ? isStart = false : isStart = true;
     laserScanner.isStart = isStart;
 }
 //--------------------------------------------------------------
-void ofApp::resetPointsButtonPressed() {
+void ofApp::onResetPointsButtonPressed() {
     laserScanner.pts.clear();
     laserScanner.isStart = false;
     rotate = 0;
 }
-
 //--------------------------------------------------------------
-void ofApp::saveButtonPressed() {
+void ofApp::onSaveButtonPressed() {
     saveCSV(laserScanner.pts);
 }
 //--------------------------------------------------------------
