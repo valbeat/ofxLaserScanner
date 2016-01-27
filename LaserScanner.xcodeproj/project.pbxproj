@@ -11,6 +11,7 @@
 		0F3943121C535CA900B7E94D /* videoSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F3943111C535CA900B7E94D /* videoSource.cpp */; };
 		0F4B711F1C4F0A9D004BD60C /* meshCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F4B711D1C4F0A9D004BD60C /* meshCreator.cpp */; };
 		0F4B71221C4F2478004BD60C /* laserScanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F4B71201C4F2478004BD60C /* laserScanner.cpp */; };
+		0F5A098B1C5857FB00DF0851 /* laser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F5A098A1C5857FB00DF0851 /* laser.cpp */; };
 		0FB02D5F1C1F9DCE0007CB80 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */; };
 		0FB02D601C1F9DCE0007CB80 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */; };
 		0FB02D651C1FB1B10007CB80 /* ofxCsv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FB02D631C1FB1B10007CB80 /* ofxCsv.cpp */; };
@@ -109,6 +110,8 @@
 		0F4B711D1C4F0A9D004BD60C /* meshCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = meshCreator.cpp; sourceTree = "<group>"; };
 		0F4B71201C4F2478004BD60C /* laserScanner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = laserScanner.cpp; sourceTree = "<group>"; };
 		0F4B71211C4F2478004BD60C /* laserScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = laserScanner.h; sourceTree = "<group>"; };
+		0F5A09891C5857A200DF0851 /* laser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = laser.h; sourceTree = "<group>"; };
+		0F5A098A1C5857FB00DF0851 /* laser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = laser.cpp; sourceTree = "<group>"; };
 		0FB02D581C1F9DCE0007CB80 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
 		0FB02D591C1F9DCE0007CB80 /* ofxDelaunay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		0FB02D5D1C1F9DCE0007CB80 /* Delaunay.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
@@ -840,6 +843,8 @@
 				0F3527511C50A697008A29FE /* utility.h */,
 				0F3943101C535C8B00B7E94D /* videoSource.h */,
 				0F3943111C535CA900B7E94D /* videoSource.cpp */,
+				0F5A09891C5857A200DF0851 /* laser.h */,
+				0F5A098A1C5857FB00DF0851 /* laser.cpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -983,6 +988,7 @@
 				0FD558191BE063D700E8B87F /* ofxToggle.cpp in Sources */,
 				5CC34D433F5806179935B89D /* Flow.cpp in Sources */,
 				2023EF517ED2D8B397511D4B /* Helpers.cpp in Sources */,
+				0F5A098B1C5857FB00DF0851 /* laser.cpp in Sources */,
 				311DF864378748129984EA1D /* Kalman.cpp in Sources */,
 				C602002DE761F9B52DB4400A /* ObjectFinder.cpp in Sources */,
 				7CDAD32BE4FA46701E3552C7 /* RunningBackground.cpp in Sources */,
