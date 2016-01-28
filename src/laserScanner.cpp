@@ -39,6 +39,7 @@ void LaserScanner::update() {
     ofPixels pixels;
     image.readToPixels(pixels);
     readLaserPixels(pixels);
+    drawLaserPoints(laserPos);
 //
 //    calc();
 }
@@ -85,7 +86,7 @@ void LaserScanner::readLaserPixels(ofPixels pixels) {
     int w = pixels.getWidth();
     int h = pixels.getHeight();
     
-    
+    // レーザーの位置を取得
     for (int y = 0; y < h; y+= laserPointInterval) {
         vector<int> v;
         for (int x = 0; x < w ; x++) {
@@ -99,22 +100,25 @@ void LaserScanner::readLaserPixels(ofPixels pixels) {
         }
         
         if (!v.empty()) {
+            // x座標の中央値を取得
             int mX = Utility::median(v);
-            laserPos.push_back(ofPoint(mX,y));
-            
-            // レーザーの中心を表示させる
-            laserScan.begin();
-            // ブレンドモードをONにした時はスムージングを切る
-            ofDisableSmoothing();
-            ofEnableBlendMode(OF_BLENDMODE_ADD);
-            ofSetColor(0,255,0);
-            ofRect(mX - 1, y, 2, 2);
-            ofSetColor(255, 255, 255);
-            ofEnableAlphaBlending();
-            ofEnableSmoothing();
-            laserScan.end();
+            laserPos.push_back(ofVec2f(mX,y));
         }
     }
+}
+void LaserScanner::drawLaserPoints(vector<ofVec2f> vPosition) {
+    // レーザーの中心を表示させる
+    laserScan.begin();
+    ofDisableSmoothing(); // ブレンドモードをONにした時はスムージングを切る
+    ofEnableBlendMode(OF_BLENDMODE_ADD); // 加算合成
+    ofSetColor(0,255,0);
+    for (ofVec2f p : vPosition) {
+        ofRect(p.x - 1, p.y, 2, 2);
+    }
+    ofSetColor(255, 255, 255);
+    ofEnableAlphaBlending();
+    ofEnableSmoothing();
+    laserScan.end();
 }
 //--------------------------------------------------------------
 void LaserScanner::updateRotate() {

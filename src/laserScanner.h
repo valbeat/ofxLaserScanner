@@ -42,7 +42,7 @@ public:
     int rotateInterval; // 回転量
     
     // スクリーン上でレーザーが当たっている位置
-    vector<ofVec3f> laserPos;
+    vector<ofVec2f> laserPos;
     // レーザーの座標を蓄えておく
     vector<ofPoint> pts;
     // 現在のフレームの座標
@@ -72,7 +72,7 @@ public:
 private:
     
     Laser laser;
-    
+    void drawLaserPoints(vector<ofVec2f> position);
     
 };
 
