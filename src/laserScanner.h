@@ -10,6 +10,7 @@
 #define laserScanner_h
 #include "ofMain.h"
 #include "utility.h"
+#include "laser.h"
 
 // oFの解像度 [dpi]
 #define RESOLUSION_WIDTH 72
@@ -69,7 +70,8 @@ public:
     int x0;
     
 private:
-
+    
+    Laser laser;
     
     
 };

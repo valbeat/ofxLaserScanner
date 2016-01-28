@@ -7,7 +7,7 @@
 //
 
 #include "laser.h"
-Laser::Laser(EColor _color, int _bright) {
+Laser::Laser(LightColor _color, int _bright) {
     color = _color;
     bright = _bright;
 }
@@ -18,6 +18,10 @@ bool Laser::isHit(ofColor c) {
         return true;
     }
     return false;
+}
+
+void Laser::setBright(int _bright) {
+    bright = _bright;
 }
 
 int Laser::getScreenBright(ofColor c) {
@@ -33,3 +37,4 @@ int Laser::getScreenBright(ofColor c) {
             return 0;
     }
 }
+

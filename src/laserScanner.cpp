@@ -20,6 +20,8 @@ void LaserScanner::setup(int w, int h) {
     laserScan.end();
 
     setupPointCloud();
+    
+    laser = *new Laser();
 
 }
 void LaserScanner::setupPointCloud() {
@@ -91,7 +93,7 @@ void LaserScanner::readLaserPixels(ofPixels pixels) {
             ofColor c = pixels.getColor(x, y);
             
             // 緑成分の閾値で判定
-            if(c.g > laserBright) {
+            if(laser.isHit(c)) {
                 v.push_back(x);
             }
         }
