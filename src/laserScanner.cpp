@@ -65,7 +65,7 @@ void LaserScanner::calc() {
     x0 = (int)(d * RESOLUSION_WIDTH / 25.4); // レーザーの基準値[mm]→[pixel]
     for (ofVec2f pos : laserPos) {
         float diff = abs(pos.x - lookPoint) - x0; // カメラの中心とのレーザーの位置の差分を取る
-        if(diff < 0) diff = 0; // 差分がない場所はモデルが無い場所とみなす
+        if(diff < 0) continue; // 差分がない場所はモデルが無い場所とみなす
         ofVec3f pos3d;
         float rad = rotate * DEG_TO_RAD; // 角度をradianに変換
         pos3d.y = (-pos.y + Ny / 2) / RESOLUSION_HEIGHT * 25.4;
