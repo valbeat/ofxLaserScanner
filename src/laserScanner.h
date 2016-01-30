@@ -34,19 +34,15 @@ public:
     ofFbo laserScan;
 
     
-    int laserBright; // レーザーの明るさ閾値
     int d; // カメラとレーザーの距離[mm]
     int Lz; // カメラとスクリーンの距離[mm]
-    int laserPointInterval; // レーザーポインタの間隔
+    int laserPointInterval; // レーザーのy軸方向の間隔
     int rotate; // 回転角
     int rotateInterval; // 回転量
     
-    // スクリーン上でレーザーが当たっている位置
-    vector<ofVec2f> laserPos;
+
     // レーザーの座標を蓄えておく
-    vector<ofPoint> pts;
-    // 現在のフレームの座標
-    vector<ofPoint> pts_temp;
+    vector<ofVec3f> pts;
     
     // 3Dモデルのポイントクラウド
     ofMesh pointCloud;
@@ -66,12 +62,15 @@ public:
     void setRotate(int angle);
     
     int getCenter();
+    
+    void setLaserBrightness(int brightness);
 
     int x0;
     
 private:
-    
     Laser laser;
+    vector<ofVec2f> laserPos;    // スクリーン上でレーザーが当たっている位置
+    
     void drawLaserPoints(vector<ofVec2f> position);
     
 };

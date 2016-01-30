@@ -7,24 +7,24 @@
 //
 
 #include "laser.h"
-Laser::Laser(LightColor _color, int _bright) {
+Laser::Laser(LightColor _color, int _brightness) {
     color = _color;
-    bright = _bright;
+    brightness = _brightness;
 }
 
 bool Laser::isHit(ofColor c) {
     // スクリーンの明るさが設定した明るさより明るければ当たっていると判断
-    if(getScreenBright(c) > bright) {
+    if(getScreenBrightness(c) > brightness) {
         return true;
     }
     return false;
 }
 
-void Laser::setBright(int _bright) {
-    bright = _bright;
+void Laser::setBrightness(int _brightness) {
+    brightness = _brightness;
 }
 
-int Laser::getScreenBright(ofColor c) {
+int Laser::getScreenBrightness(ofColor c) {
     // レーザーの色によって必要な色の明るさを取得
     switch (color) {
         case Red:

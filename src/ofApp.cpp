@@ -45,19 +45,16 @@ void ofApp::update(){
     // レーザースキャナの更新
     laserScanner.update();
 
-//    // 点群データの作成
-//    laserScanner.createPointCloud();
-//    
-//    // プレビュー画面の作成
-//    preview.begin();
-//    ofClear(0);
-//    previewCamera.begin();
-//    laserScanner.pointCloud.draw();
-//    previewCamera.end();
-//    preview.end();
-//
-//    // クリア
-//    laserScanner.laserPos.clear();
+    // 点群データの作成
+    laserScanner.createPointCloud();
+
+    // プレビュー画面の作成
+    preview.begin();
+    ofClear(0);
+    previewCamera.begin();
+    laserScanner.pointCloud.draw();
+    previewCamera.end();
+    preview.end();
     
 }
 
@@ -160,19 +157,19 @@ void ofApp::setupGui() {
     guiFlag = true;
     gui.setup();
     gui.add(laserBright.setup("laserBright",250,0,255));
-//    laserBright.addListener(this, &ofApp::onLaserBrightChanged);
+    laserBright.addListener(this, &ofApp::onLaserBrightChanged);
     
     gui.add(distanceCameraLaser.setup("d(mm)", 60, 0, 200));
-//    distanceCameraLaser.addListener(this, &ofApp::onDistanceCameraLaserChanged);
+    distanceCameraLaser.addListener(this, &ofApp::onDistanceCameraLaserChanged);
     
     gui.add(distanceCameraScreen.setup("Lz(mm)", 260, 0, 1000));
-//    distanceCameraScreen.addListener(this, &ofApp::onDistanceCameraScreenChanged);
+    distanceCameraScreen.addListener(this, &ofApp::onDistanceCameraScreenChanged);
     
     gui.add(laserPointInterval.setup("laser Interval", 5,1,10));
-//    laserPointInterval.addListener(this, &ofApp::onLaserPointInervalChanged);
+    laserPointInterval.addListener(this, &ofApp::onLaserPointInervalChanged);
     
     gui.add(rotate.setup("theta",0,0,360));
-//    rotate.addListener(this, &ofApp::onRotateChanged);
+    rotate.addListener(this, &ofApp::onRotateChanged);
     
     gui.add(rotateInterval.setup("rotateInterval",1,1,90));
     rotateInterval.addListener(this, &ofApp::onRotateIntervalChanged);
@@ -195,7 +192,6 @@ void ofApp::setupGui() {
 }
 
 void ofApp::setLaserScannerParams() {
-    laserScanner.laserBright = laserBright;
     laserScanner.d = distanceCameraLaser;
     laserScanner.Lz = distanceCameraScreen;
     laserScanner.laserPointInterval = laserPointInterval;
@@ -204,7 +200,7 @@ void ofApp::setLaserScannerParams() {
 }
 
 void ofApp::onLaserBrightChanged(int &laserBright) {
-    laserScanner.laserBright = laserBright;
+    laserScanner.setLaserBrightness(laserBright);
 }
 //--------------------------------------------------------------
 void ofApp::onDistanceCameraLaserChanged(int &distanceCameraLaser) {

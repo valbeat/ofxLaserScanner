@@ -18,14 +18,14 @@ class Laser {
 public:
     enum LightColor{ Red, Green, Blue}; // 色の定義
     bool isHit(ofColor c); // 光量からレーザーが当たっているかどうかを判断する
-    void setBright(int bright); // 明るさを設定する
+    void setBrightness(int brightness); // 明るさを設定する
     
     Laser(LightColor _color = COLOR, int _bright = BRIGHT);
     
 private:
     LightColor color;   // レーザーの色 (赤，緑，青)
-    int bright;     //レーザーの明るさ (0 ~ 255)
-    int getScreenBright(ofColor c); // スクリーン上に写った時の明るさを取得
+    int brightness;     //レーザーの明るさ (0 ~ 255)
+    int getScreenBrightness(ofColor c); // スクリーン上に写った時の明るさを取得
 };
 
 
