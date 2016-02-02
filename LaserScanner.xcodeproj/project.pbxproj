@@ -136,6 +136,8 @@
 		0FD558101BE063D700E8B87F /* ofxToggle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxToggle.cpp; sourceTree = "<group>"; };
 		0FD558111BE063D700E8B87F /* ofxToggle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxToggle.h; sourceTree = "<group>"; };
 		0FD8C0CA1C4DC7B1006439A9 /* meshCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = meshCreator.h; sourceTree = "<group>"; };
+		0FFED06A1C60352000517901 /* observer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = observer.h; sourceTree = "<group>"; };
+		0FFED06B1C60359200517901 /* subject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subject.h; sourceTree = "<group>"; };
 		114B872696817CC33990FC83 /* imgproc.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = imgproc.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc/imgproc.hpp; sourceTree = SOURCE_ROOT; };
 		178547E33CE398C7B59F08AB /* ContourFinder.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ContourFinder.h; path = ../../../addons/ofxCv/libs/ofxCv/include/ofxCv/ContourFinder.h; sourceTree = SOURCE_ROOT; };
 		1E95EFD35ED9C5D97F2F015E /* timer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = timer.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/timer.h; sourceTree = SOURCE_ROOT; };
@@ -845,6 +847,8 @@
 				0F3943111C535CA900B7E94D /* videoSource.cpp */,
 				0F5A09891C5857A200DF0851 /* laser.h */,
 				0F5A098A1C5857FB00DF0851 /* laser.cpp */,
+				0FFED06A1C60352000517901 /* observer.h */,
+				0FFED06B1C60359200517901 /* subject.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

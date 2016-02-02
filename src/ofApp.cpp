@@ -192,6 +192,7 @@ void ofApp::setupGui() {
 }
 
 void ofApp::setLaserScannerParams() {
+    laserScanner.setLaserBrightness(laserBright);
     laserScanner.d = distanceCameraLaser;
     laserScanner.Lz = distanceCameraScreen;
     laserScanner.laserPointInterval = laserPointInterval;
