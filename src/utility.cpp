@@ -51,3 +51,11 @@ string Utility::vecToCSV(vector<ofPoint> v) {
     std::string s = ss.str();
     return s;
 }
+
+//--------------------------------------------------------------
+// CSVファイルに保存する
+void Utility::saveCSV(string fileName,vector<ofPoint> v) {
+    string s = Utility::vecToCSV(v);
+    ofBuffer buffer = s;
+    ofBufferToFile(fileName, buffer);
+}

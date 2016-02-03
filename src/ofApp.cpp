@@ -22,13 +22,6 @@ void ofApp::setup(){
     
     setLaserScannerParams();
     
-    
-
-    
-//    vbo.setVertexData(pts,NUM_VERTEX, GL_DYNAMIC_DRAW);
-    
-
-    
     // マウスカーソル非表示バグ回避
     ofHideCursor();
     
@@ -241,11 +234,11 @@ void ofApp::onResetPointsButtonPressed() {
 }
 //--------------------------------------------------------------
 void ofApp::onSaveButtonPressed() {
-    saveCSV(laserScanner.pts);
+    saveCSV(CSV_NAME,laserScanner.pts);
 }
 //--------------------------------------------------------------
-// CSVに保存する
-void ofApp::saveCSV(vector<ofPoint> v) {
+// CSVファイルに保存する
+void ofApp::saveCSV(string fileName,vector<ofPoint> v) {
     string s = Utility::vecToCSV(v);
     ofBuffer buffer = s;
     ofBufferToFile(CSV_NAME, buffer);

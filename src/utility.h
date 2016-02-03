@@ -17,7 +17,7 @@ public:
     static float mean(vector<int> v);
     static float median(vector<int> v);
     static string vecToCSV(vector<ofPoint> v);
-    
+    static void saveCSV(string fileName, vector<ofPoint> v);
 private:
     Utility();
     

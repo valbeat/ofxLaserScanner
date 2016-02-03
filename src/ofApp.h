@@ -86,7 +86,7 @@ private:
     void createPointCloud(); // ポイントクラウドを作る
     void setupGui(); // GUIのセットアップ
     void setupPreviewCamera(); // プレビュー用カメラのセットアップ
-    void saveCSV(vector<ofPoint>); // CSVの保存
+    void saveCSV(string fileName,vector<ofPoint>); // CSVの保存
     
     // vbo
     ofVbo vbo;
