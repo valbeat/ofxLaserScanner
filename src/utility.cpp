@@ -2,8 +2,6 @@
 //  Utility.cpp
 //  LaserScanner
 //
-//  Created by kajikawa on 2016/01/21.
-//
 //
 
 #include "utility.h"

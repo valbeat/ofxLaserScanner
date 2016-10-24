@@ -2,8 +2,6 @@
 //  laser.cpp
 //  LaserScanner
 //
-//  Created by kajikawa on 1/27/16.
-//
 //
 
 #include "laser.h"

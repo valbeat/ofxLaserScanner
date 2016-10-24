@@ -2,8 +2,6 @@
 //  meshCreator.h
 //  LaserScanner
 //
-//  Created by kajikawa on 2016/01/19.
-//
 //
 
 #ifndef MeshCreator_h

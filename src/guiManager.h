@@ -2,8 +2,6 @@
 //  guiManager.h
 //  LaserScanner
 //
-//  Created by kajikawa on 2/3/16.
-//
 //
 
 #ifndef guiManager_h
