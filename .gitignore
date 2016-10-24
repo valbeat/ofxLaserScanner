@@ -7,7 +7,7 @@
 build/
 
 # data files
-bin/
+bin/data/
 
 # Xcode project files except for the project file
 *.xcodeproj/
