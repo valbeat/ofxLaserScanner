@@ -1,2 +1,2 @@
 # Scanner
-openFrameworks
+レーザースキャナー出力データのVisualization
